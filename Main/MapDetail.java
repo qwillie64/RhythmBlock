@@ -2,7 +2,6 @@ package Main;
 
 import java.util.ArrayList;
 
-
 public class MapDetail {
     public class Note {
         public int channel;
