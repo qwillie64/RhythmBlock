@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel  {
     List<GameObject> GameObjectCollect = new LinkedList<>();
     boolean IsRunning = false;
-    float TargetFPS = 10;
+    float TargetFPS = 40;
 
     public GamePanel(int width, int height) {
 
@@ -24,20 +24,20 @@ public class GamePanel extends JPanel  {
 
     public void Run() {
         long lastUpdateTime = System.nanoTime();
-        double OPTIMAL_TIME = 1000000000 / TargetFPS;
+        float time = 0;
+        final float timer = 0.5f;
+        final float DELTA = 1f / TargetFPS;
         IsRunning = true;
 
         while (IsRunning) {
             long currentTime = System.nanoTime();
-            long lastUpdateLength = currentTime - lastUpdateTime;
+            float lastUpdateLength = (float)(currentTime - lastUpdateTime) / 1000000000; // seconds
             lastUpdateTime = currentTime;
+            float delta = lastUpdateLength / DELTA;
 
-            // delta
-            double delta = lastUpdateLength / ((double) OPTIMAL_TIME);
-            System.out.println(delta);
 
             // update game state
-            Update((float) delta);
+            Update(lastUpdateLength);
 
             // repaint all graphics
             paintImmediately(0, 0, getWidth(), getHeight());
@@ -46,8 +46,14 @@ public class GamePanel extends JPanel  {
             // System.out.println(InputListener.ToString());
             InputListener.Refresh();
 
+            time += lastUpdateLength;
+            if (time >= timer) {
+                System.out.println("FPS : " + delta * TargetFPS);
+                time = 0;
+            }
+
             try {
-                long remaining = (long) ((lastUpdateTime - System.nanoTime() + OPTIMAL_TIME) / 1000000);
+                long remaining = (long) ((lastUpdateTime - System.nanoTime() + DELTA * 1000000000) / 1000000);
                 Thread.sleep(remaining);
             } catch (InterruptedException ex) {
             }
@@ -56,12 +62,21 @@ public class GamePanel extends JPanel  {
 
     public void Update(float delta) {
         if (InputListener.IsKeyClick(KeyEvent.VK_A)) {
-            GameObjectCollect.add(new Block(new Point(50, 0), 10, 32, 200));
+            GameObjectCollect.add(new Block(new Point(50, 0), 30, 32, 200));
         }
         if (InputListener.IsKeyClick(KeyEvent.VK_S)) {
-            GameObjectCollect.add(new Block(new Point(150, 0), 10, 32, 200));
+            GameObjectCollect.add(new Block(new Point(150, 0), 30, 32, 200));
         }
-        
+        if (InputListener.IsKeyPress(KeyEvent.VK_D)) {
+            GameObjectCollect.add(new Block(new Point(250, 0), 60, 32, 200));
+        }
+        if (InputListener.IsKeyClick(KeyEvent.VK_UP)) {
+            TargetFPS = TargetFPS + 10;
+        }
+        if (InputListener.IsKeyClick(KeyEvent.VK_DOWN)) {
+            TargetFPS = TargetFPS - 10;
+        }
+
         for (GameObject gObject : GameObjectCollect) {
             gObject.Update(delta);
         }
@@ -72,8 +87,14 @@ public class GamePanel extends JPanel  {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        // pain background
+        // paint background
         g2.setBackground(Color.GRAY);
+
+        // paint ruler
+        g.setColor(Color.RED);
+        for (int i = 0; i < 10; i++) {
+            g.drawLine(0, i * 30, getWidth(), i * 30);
+        }
 
         // paint all object
         g.setColor(Color.BLACK);
