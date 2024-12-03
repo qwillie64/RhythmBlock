@@ -7,7 +7,7 @@ public class GameObjectManager {
     public static DetectLine DetectLine;
 
     public static void Add(GameObject gameObject) {
-        if (gameObject.getClass() == Block.class) {
+        if (gameObject.getClass().getSuperclass() == Block.class) {
             BlockCollection.add((Block) gameObject);
         }
         else if (gameObject.getClass() == DetectLine.class) {
@@ -17,7 +17,8 @@ public class GameObjectManager {
     }
     
     public static void Update(float delta) {
-        BlockCollection.removeIf(obj -> obj.IsHit);
+        BlockCollection.removeIf(obj -> obj.State == BlockState.FINISH);
+        BlockCollection.removeIf(obj -> obj.State == BlockState.DEAD);
 
         for (GameObject gObject : BlockCollection) {
             gObject.Update(delta);

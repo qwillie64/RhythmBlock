@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 
 public class GameRootPanel extends JPanel  {
     boolean IsRunning = false;
-    float TargetFPS = 40;
+    float TargetFPS = 60;
     float BPM = 128;
 
     public GameRootPanel(int width, int height) {
@@ -63,7 +63,8 @@ public class GameRootPanel extends JPanel  {
 
             bpm_time += lastUpdateLength;
             if (bpm_time >= 4 * Bar) {
-                GameObjectManager.Add(new Block(new Rectangle(0,0,50, 30), 150, KeyEvent.VK_A));
+                GameObjectManager.Add(new PressBlock(new Rectangle(0, 0, 50, 100), 200, KeyEvent.VK_A, 0.3f));
+                GameObjectManager.Add(new ClickBlock(new Rectangle(80,0,50, 30), 200, KeyEvent.VK_S));
                 bpm_time = 0;
             }
 

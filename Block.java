@@ -5,8 +5,7 @@ import java.awt.Rectangle;
 public class Block extends GameObject {
     public float Speed;
     public int HitKey;
-    public boolean IsHit = false;
-    public boolean IsMiss = false;
+    public BlockState State = BlockState.ACTIVE;
 
     public Block(Rectangle body, float speed, int hitKey) {
         this.Body = body;
@@ -17,16 +16,9 @@ public class Block extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        g.setColor(color);
-        g.fillRect(Body.x, Body.y, Body.width, Body.height);
     }
 
     @Override
     public void Update(float delta) {
-        if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, GameObjectManager.DetectLine.Body)) {
-            IsHit = true;
-        }
-        
-        Body.y = (int) (Body.y + Speed * delta);
     }
 }
