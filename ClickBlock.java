@@ -18,13 +18,13 @@ public class ClickBlock extends Block{
     public void Update(float delta) {
         if (State == BlockState.ACTIVE) {
             // 超線未點 -> Miss, State.DEAD
-            if (Tool.IsOver(Body, GameObjectManager.DetectLine.Body)) {
+            if (Tool.IsOver(Body, ObjectManager.DetectLine.Body)) {
                 State = BlockState.DEAD;
                 return;
             }
 
             // 點擊成功 -> State.FINISH
-            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, GameObjectManager.DetectLine.Body)) {
+            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, ObjectManager.DetectLine.Body)) {
             State = BlockState.FINISH;
             }
         }

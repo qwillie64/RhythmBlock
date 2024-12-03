@@ -2,18 +2,17 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 
-public class GameObjectManager {
+public class ObjectManager {
     public static List<Block> BlockCollection = new LinkedList<>();
+    public static List<Block> ProcessingBlockCollection = new LinkedList<>();
     public static DetectLine DetectLine;
 
-    public static void Add(GameObject gameObject) {
-        if (gameObject.getClass().getSuperclass() == Block.class) {
-            BlockCollection.add((Block) gameObject);
-        }
-        else if (gameObject.getClass() == DetectLine.class) {
-            DetectLine = (DetectLine) gameObject;
-        }
-        
+    public static void AddBlock(Block block) {
+        BlockCollection.add(block);
+    }
+    
+    public static void SetDetectLine(DetectLine detectLine) {
+        DetectLine = detectLine;
     }
     
     public static void Update(float delta) {

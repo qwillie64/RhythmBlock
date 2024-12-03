@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 public class GameRootPanel extends JPanel  {
     boolean IsRunning = false;
     float TargetFPS = 60;
-    float BPM = 128;
+    float BPM = 165;
 
     public GameRootPanel(int width, int height) {
         setPreferredSize(new Dimension(width, height));
@@ -19,6 +19,10 @@ public class GameRootPanel extends JPanel  {
         setFocusable(true);
     }
 
+    public void ReadMap(String path) {
+
+    }
+    
     public void Start() {
         IsRunning = true;
         Run();
@@ -37,7 +41,7 @@ public class GameRootPanel extends JPanel  {
         final float Bar = 60 / BPM;
         IsRunning = true;
 
-        GameObjectManager.Add(new DetectLine(new Rectangle(0, 300, getWidth(), 5)));
+        ObjectManager.SetDetectLine(new DetectLine(new Rectangle(0, 300, getWidth(), 5)));
 
         while (IsRunning) {
             long currentTime = System.nanoTime();
@@ -63,8 +67,8 @@ public class GameRootPanel extends JPanel  {
 
             bpm_time += lastUpdateLength;
             if (bpm_time >= 4 * Bar) {
-                GameObjectManager.Add(new PressBlock(new Rectangle(0, 0, 50, 100), 200, KeyEvent.VK_A, 0.3f));
-                GameObjectManager.Add(new ClickBlock(new Rectangle(80,0,50, 30), 200, KeyEvent.VK_S));
+                ObjectManager.AddBlock(new PressBlock(new Rectangle(0, 0, 50, 100), 200, KeyEvent.VK_A, 0.3f));
+                ObjectManager.AddBlock(new ClickBlock(new Rectangle(80,0,50, 30), 200, KeyEvent.VK_S));
                 bpm_time = 0;
             }
 
@@ -89,7 +93,7 @@ public class GameRootPanel extends JPanel  {
 
         
 
-        GameObjectManager.Update(delta);
+        ObjectManager.Update(delta);
     }
 
     @Override
@@ -107,6 +111,6 @@ public class GameRootPanel extends JPanel  {
         }
 
         // paint all object
-        GameObjectManager.paintComponent(g);
+        ObjectManager.paintComponent(g);
     }
 }

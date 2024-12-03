@@ -26,24 +26,24 @@ public class PressBlock extends Block {
     public void Update(float delta) {
         if (State == BlockState.ACTIVE) {
             // 超線未點 -> Miss, State.DEAD
-            if (Tool.IsOver(HitBody, GameObjectManager.DetectLine.Body)) {
+            if (Tool.IsOver(HitBody, ObjectManager.DetectLine.Body)) {
                 State = BlockState.DEAD;
                 return;
             }
 
             // 點擊成功 -> State.KEEP
-            if (InputListener.IsKeyPress(HitKey) && Tool.IsCollision(HitBody, GameObjectManager.DetectLine.Body)) {
+            if (InputListener.IsKeyPress(HitKey) && Tool.IsCollision(HitBody, ObjectManager.DetectLine.Body)) {
                 State = BlockState.KEEP;
             }
         }
         else if (State == BlockState.KEEP) {
             // 過線 -> State.FINISH
-            if (Tool.IsOver(Body, GameObjectManager.DetectLine.Body)) {
+            if (Tool.IsOver(Body, ObjectManager.DetectLine.Body)) {
                 State = BlockState.FINISH;
             }
             
             // 長按失敗 -> State.DEAD
-            if (!InputListener.IsKeyPress(HitKey) && Tool.IsCollision(Body, GameObjectManager.DetectLine.Body)) {
+            if (!InputListener.IsKeyPress(HitKey) && Tool.IsCollision(Body, ObjectManager.DetectLine.Body)) {
                 State = BlockState.DEAD;
                 return;
             }

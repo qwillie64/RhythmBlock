@@ -2,8 +2,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+
 public class Block extends GameObject {
     public float Speed;
+    public float Time;
     public int HitKey;
     public BlockState State = BlockState.ACTIVE;
 
