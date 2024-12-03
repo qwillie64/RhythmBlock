@@ -16,10 +16,19 @@ public class ClickBlock extends Block{
 
     @Override
     public void Update(float delta) {
-        
-        if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, GameObjectManager.DetectLine.Body)) {
+        if (State == BlockState.ACTIVE) {
+            // 超線未點 -> Miss, State.DEAD
+            if (Tool.IsOver(Body, GameObjectManager.DetectLine.Body)) {
+                State = BlockState.DEAD;
+                return;
+            }
+
+            // 點擊成功 -> State.FINISH
+            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, GameObjectManager.DetectLine.Body)) {
             State = BlockState.FINISH;
+            }
         }
+
         
         Body.y = (int) (Body.y + Speed * delta);
     }
