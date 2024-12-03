@@ -34,8 +34,8 @@ public class MusicPlayer {
         Audio.setMicrosecondPosition(Start);
     }
 
-    public long GetCurrentTime() {
-        return Audio.getMicrosecondPosition();
+    public static int GetCurrentTime() {
+        return (int)Audio.getMicrosecondPosition();
     }
     
     public static void Play() {

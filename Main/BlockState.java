@@ -1,5 +1,5 @@
 package Main;
 
 public enum BlockState {
-    ACTIVE, DEAD, FINISH, KEEP
+    STAY, ACTIVE, DEAD, FINISH, KEEP
 }

@@ -25,16 +25,8 @@ public class GameRootPanel extends JPanel  {
 
         MapDetail md = new MapDetail();
         md.Read("Assests//GlitchyGlass.csv");
-        
-        MusicPlayer.LoadFile("Assests//GlitchyGlass.wav");
-        MusicPlayer.SetStartPosition(20000);
-        MusicPlayer.Play();
     }
 
-    public void ReadMap(String path) {
-        
-    }
-    
     public void Start() {
         IsRunning = true;
         Run();
@@ -55,6 +47,10 @@ public class GameRootPanel extends JPanel  {
 
         ObjectManager.SetDetectLine(new DetectLine(new Rectangle(0, 300, getWidth(), 5)));
 
+        MusicPlayer.LoadFile("Assests//GlitchyGlass.wav");
+        MusicPlayer.SetStartPosition(20000);
+        MusicPlayer.Play();
+        
         while (IsRunning) {
             long currentTime = System.nanoTime();
             float lastUpdateLength = (float)(currentTime - lastUpdateTime) / 1000000000; // seconds
@@ -71,16 +67,18 @@ public class GameRootPanel extends JPanel  {
             // System.out.println(InputListener.ToString());
             InputListener.Refresh();
 
+            // 定時更新運行資訊
             time += lastUpdateLength;
             if (time >= timer) {
                 System.out.println("FPS : " + delta * TargetFPS);
+                System.out.println("Music : " + MusicPlayer.GetCurrentTime());
                 time = 0;
             }
 
             bpm_time += lastUpdateLength;
             if (bpm_time >= 4 * Bar) {
-                ObjectManager.AddBlock(new PressBlock(new Rectangle(0, 0, 50, 100), 200, KeyEvent.VK_A, 0.3f));
-                ObjectManager.AddBlock(new ClickBlock(new Rectangle(80,0,50, 30), 200, KeyEvent.VK_S));
+                // ObjectManager.AddBlock_Stay(new PressBlock(new Rectangle(0, 0, 50, 100), 200, KeyEvent.VK_A, 0.3f));
+                // ObjectManager.AddBlock_Stay(new ClickBlock(new Rectangle(80,0,50, 30), 200, KeyEvent.VK_S));
                 bpm_time = 0;
             }
 
@@ -102,8 +100,6 @@ public class GameRootPanel extends JPanel  {
         if (InputListener.IsKeyClick(KeyEvent.VK_DOWN)) {
             TargetFPS = TargetFPS - 10;
         }
-
-        
 
         ObjectManager.Update(delta);
     }

@@ -9,8 +9,8 @@ import Tool.*;
 
 public class ClickBlock extends Block{
     
-    public ClickBlock(Rectangle body, float speed, int hitKey) {
-        super(body, speed, hitKey);
+    public ClickBlock(Rectangle body, float speed, int hitKey, int timeMark, int duration) {
+        super(body, speed, hitKey, timeMark, duration);
     }
     
     @Override

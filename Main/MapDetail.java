@@ -38,7 +38,7 @@ public class MapDetail {
                         Integer.parseInt(data[2]),
                         Integer.parseInt(data[3])));
 
-                System.out.println(data[0] + data[1] + data[2]);
+                // System.out.println(data[2]);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -47,8 +47,8 @@ public class MapDetail {
         for (Note note : Notes) {
             switch (note.type) {
                 case 0:
-                    ObjectManager.AddBlock(new ClickBlock(new Rectangle(note.channel * 60, 0, 50, note.duration * 30),
-                            200, Setting.KeySet.get(note.channel)));
+                    ObjectManager.AddBlock_Stay(new ClickBlock(new Rectangle(note.channel * 60, 0, 50, note.duration * 30),
+                            200, Setting.KeySet.get(note.channel), note.time, note.duration));
                     break;
                 case 1:
                     

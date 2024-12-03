@@ -10,8 +10,8 @@ public class PressBlock extends Block {
     public float HitRate;
     public Rectangle HitBody;
 
-    public PressBlock(Rectangle body, float speed, int hitKey, float hitRate) {
-        super(body, speed, hitKey);
+    public PressBlock(Rectangle body, float speed, int hitKey, float hitRate, int timeMark, int duration) {
+        super(body, speed, hitKey, timeMark, duration);
         this.HitRate = hitRate;
         this.HitBody = Tool.GetPart(body, hitRate);
         this.color = Color.GRAY;
