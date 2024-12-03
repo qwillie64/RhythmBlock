@@ -16,6 +16,8 @@ public class Block extends GameObject {
         this.Body = body;
         this.Speed = speed;
         this.HitKey = hitKey;
+        this.TimeMark = timeMark;
+        this.Duration = duration;
         this.color = Color.BLACK;
     }
 
