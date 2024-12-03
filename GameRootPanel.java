@@ -4,17 +4,15 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.util.LinkedList;
-import java.util.List;
+
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel  {
-    List<GameObject> GameObjectCollect = new LinkedList<>();
+public class GameRootPanel extends JPanel  {
     boolean IsRunning = false;
     float TargetFPS = 40;
+    float GameTime = 0;
 
-    public GamePanel(int width, int height) {
-
+    public GameRootPanel(int width, int height) {
         setPreferredSize(new Dimension(width, height));
         setDoubleBuffered(true);
 
@@ -22,10 +20,19 @@ public class GamePanel extends JPanel  {
         setFocusable(true);
     }
 
+    public void Start() {
+        IsRunning = true;
+        Run();
+    }
+
+    public void Stop() {
+        IsRunning = false;
+    }
+    
     public void Run() {
         long lastUpdateTime = System.nanoTime();
         float time = 0;
-        final float timer = 0.5f;
+        final float timer = 0.3f;
         final float DELTA = 1f / TargetFPS;
         IsRunning = true;
 
@@ -34,7 +41,6 @@ public class GamePanel extends JPanel  {
             float lastUpdateLength = (float)(currentTime - lastUpdateTime) / 1000000000; // seconds
             lastUpdateTime = currentTime;
             float delta = lastUpdateLength / DELTA;
-
 
             // update game state
             Update(lastUpdateLength);
@@ -60,15 +66,15 @@ public class GamePanel extends JPanel  {
         }
     }
 
-    public void Update(float delta) {
+    protected void Update(float delta) {
         if (InputListener.IsKeyClick(KeyEvent.VK_A)) {
-            GameObjectCollect.add(new Block(new Point(50, 0), 30, 32, 200));
+            GameObjectManager.Add(new Block(new Point(50, 0), 30, 32, 200));
         }
         if (InputListener.IsKeyClick(KeyEvent.VK_S)) {
-            GameObjectCollect.add(new Block(new Point(150, 0), 30, 32, 200));
+            GameObjectManager.Add(new Block(new Point(150, 0), 30, 32, 200));
         }
         if (InputListener.IsKeyPress(KeyEvent.VK_D)) {
-            GameObjectCollect.add(new Block(new Point(250, 0), 60, 32, 200));
+            GameObjectManager.Add(new Block(new Point(250, 0), 60, 32, 200));
         }
         if (InputListener.IsKeyClick(KeyEvent.VK_UP)) {
             TargetFPS = TargetFPS + 10;
@@ -77,9 +83,7 @@ public class GamePanel extends JPanel  {
             TargetFPS = TargetFPS - 10;
         }
 
-        for (GameObject gObject : GameObjectCollect) {
-            gObject.Update(delta);
-        }
+        GameObjectManager.Update(delta);
     }
 
     @Override
@@ -97,9 +101,6 @@ public class GamePanel extends JPanel  {
         }
 
         // paint all object
-        g.setColor(Color.BLACK);
-        for (GameObject gObject : GameObjectCollect) {
-            gObject.paintComponent(g);
-        }
+        GameObjectManager.paintComponent(g);
     }
 }

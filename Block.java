@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
@@ -14,10 +15,12 @@ public class Block extends GameObject {
         this.Speed = speed;
         this.HitKey = hitKey;
         this.TargetLine = targetLine;
+        this.color = Color.BLACK;
     }
 
     @Override
     public void paintComponent(Graphics g) {
+        g.setColor(color);
         g.fillRect(Position.x, Position.y, Size.x, Size.y);
     }
 

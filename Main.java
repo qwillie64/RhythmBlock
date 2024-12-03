@@ -16,14 +16,14 @@ public class Main extends JFrame{
     }
 
     public void startNewGame() {
-        GamePanel game = new GamePanel(getWidth(), getHeight());
+        GameRootPanel game = new GameRootPanel(getWidth(), getHeight());
         add(game);
 
         pack();
         setLocationRelativeTo(null);
         
         game.requestFocus();
-        game.Run();
+        game.Start();
     }
     
     public static void main(String[] args) {
