@@ -1,11 +1,10 @@
 package Entity;
 
+import Main.*;
+import Tool.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-
-import Main.*;
-import Tool.*;
 
 public class PressBlock extends Block {
     public float HitRate;
@@ -37,7 +36,7 @@ public class PressBlock extends Block {
             }
 
             // 點擊成功 -> State.KEEP
-            if (InputListener.IsKeyPress(HitKey) && Tool.IsCollision(HitBody, ObjectManager.DetectLine.Body)) {
+            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(HitBody, ObjectManager.DetectLine.Body)) {
                 State = BlockState.KEEP;
             }
         }

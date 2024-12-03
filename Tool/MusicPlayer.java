@@ -10,11 +10,11 @@ import javax.sound.sampled.DataLine;
 public class MusicPlayer {
 
     public static String FilePath;
+    public static long Start;
     public static Clip Audio;
 
     public static void LoadFile(String path) {
         FilePath = path;
-
         try {
             File audioFile = new File(path);
 
@@ -29,6 +29,15 @@ public class MusicPlayer {
         }
     }
 
+    public static void SetStartPosition(long ms) {
+        Start = ms * 1000;
+        Audio.setMicrosecondPosition(Start);
+    }
+
+    public long GetCurrentTime() {
+        return Audio.getMicrosecondPosition();
+    }
+    
     public static void Play() {
         if (Audio == null) {
             return;
