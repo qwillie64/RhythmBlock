@@ -22,8 +22,8 @@ public class MapDetail {
         }
     }
     
-    public int BPM;
-    public int Offset;
+    public int BPM = 165;
+    public int Offset = 0;
     public int Start;
     public ArrayList<Note> Notes = new ArrayList<>();
 
@@ -47,8 +47,9 @@ public class MapDetail {
         for (Note note : Notes) {
             switch (note.type) {
                 case 0:
-                    ObjectManager.AddBlock_Stay(new ClickBlock(new Rectangle(note.channel * 60, 0, 50, note.duration * 30),
-                            200, Setting.KeySet.get(note.channel), note.time, note.duration));
+                    int y = ObjectManager.DetectLine.Body.y - (int)(6 * (float)60 / BPM) * 250 - note.duration * 20;
+                    ObjectManager.AddBlock_Stay(new ClickBlock(new Rectangle(note.channel * 60, y, 50, note.duration * 20),
+                            250, Setting.KeySet.get(note.channel), note.time - (int)(6 * (float)60 / BPM) * 1000000, note.duration));
                     break;
                 case 1:
                     

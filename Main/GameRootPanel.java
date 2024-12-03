@@ -22,9 +22,6 @@ public class GameRootPanel extends JPanel  {
 
         addKeyListener(new InputListener());
         setFocusable(true);
-
-        MapDetail md = new MapDetail();
-        md.Read("Assests//GlitchyGlass.csv");
     }
 
     public void Start() {
@@ -47,7 +44,10 @@ public class GameRootPanel extends JPanel  {
 
         ObjectManager.SetDetectLine(new DetectLine(new Rectangle(0, 300, getWidth(), 5)));
 
-        MusicPlayer.LoadFile("Assests//GlitchyGlass.wav");
+        MapDetail md = new MapDetail();
+        md.Read("Assests//GlitchyGlass.csv");
+
+        MusicPlayer.LoadMusic("Assests//GlitchyGlass.wav");
         MusicPlayer.SetStartPosition(20000);
         MusicPlayer.Play();
         
