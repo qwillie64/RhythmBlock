@@ -1,10 +1,12 @@
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
+import java.awt.Rectangle;
 
-public class DetectLine extends GameObject {
+public class DetectLine extends GameObject{
 
-    public DetectLine(Point position, Point size) {
-        
+    public DetectLine(Rectangle body) {
+        this.Body = body;
+        this.color = Color.GREEN;
     }
     
     @Override
@@ -14,6 +16,7 @@ public class DetectLine extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-
+        g.setColor(color);
+        g.fillRect(Body.x, Body.y, Body.width, Body.height);
     }
 }

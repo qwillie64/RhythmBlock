@@ -2,15 +2,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-
 import javax.swing.JPanel;
 
 public class GameRootPanel extends JPanel  {
     boolean IsRunning = false;
     float TargetFPS = 40;
-    float GameTime = 0;
+    float BPM = 128;
 
     public GameRootPanel(int width, int height) {
         setPreferredSize(new Dimension(width, height));
@@ -32,9 +31,13 @@ public class GameRootPanel extends JPanel  {
     public void Run() {
         long lastUpdateTime = System.nanoTime();
         float time = 0;
+        float bpm_time = 0;
         final float timer = 0.3f;
         final float DELTA = 1f / TargetFPS;
+        final float Bar = 60 / BPM;
         IsRunning = true;
+
+        GameObjectManager.Add(new DetectLine(new Rectangle(0, 300, getWidth(), 5)));
 
         while (IsRunning) {
             long currentTime = System.nanoTime();
@@ -58,8 +61,17 @@ public class GameRootPanel extends JPanel  {
                 time = 0;
             }
 
+            bpm_time += lastUpdateLength;
+            if (bpm_time >= 4 * Bar) {
+                GameObjectManager.Add(new Block(new Rectangle(0,0,50, 30), 150, KeyEvent.VK_A));
+                bpm_time = 0;
+            }
+
             try {
                 long remaining = (long) ((lastUpdateTime - System.nanoTime() + DELTA * 1000000000) / 1000000);
+                if (remaining <= 0) {
+                    continue;
+                }
                 Thread.sleep(remaining);
             } catch (InterruptedException ex) {
             }
@@ -67,21 +79,14 @@ public class GameRootPanel extends JPanel  {
     }
 
     protected void Update(float delta) {
-        if (InputListener.IsKeyClick(KeyEvent.VK_A)) {
-            GameObjectManager.Add(new Block(new Point(50, 0), 30, 32, 200));
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_S)) {
-            GameObjectManager.Add(new Block(new Point(150, 0), 30, 32, 200));
-        }
-        if (InputListener.IsKeyPress(KeyEvent.VK_D)) {
-            GameObjectManager.Add(new Block(new Point(250, 0), 60, 32, 200));
-        }
         if (InputListener.IsKeyClick(KeyEvent.VK_UP)) {
             TargetFPS = TargetFPS + 10;
         }
         if (InputListener.IsKeyClick(KeyEvent.VK_DOWN)) {
             TargetFPS = TargetFPS - 10;
         }
+
+        
 
         GameObjectManager.Update(delta);
     }
