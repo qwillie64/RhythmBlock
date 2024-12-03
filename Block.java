@@ -2,15 +2,18 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 public class Block extends GameObject {
-    public float speed;
+    public float Speed;
+    public int HitKey;
+    public int TargetLine;
+    public boolean IsHit = false;
+    public boolean IsMiss = false;
 
-    public Block(Point position) {
+    public Block(Point position, float speed, int hitKey, int targetLine) {
         this.Position = position;
-        this.Size = new Point(50, 50);
-    }
-
-    public void Start() {
-        
+        this.Size = new Point(50, 20);
+        this.Speed = speed;
+        this.HitKey = hitKey;
+        this.TargetLine = targetLine;
     }
 
     @Override
@@ -18,9 +21,11 @@ public class Block extends GameObject {
         g.fillRect(Position.x, Position.y, Size.x, Size.y);
     }
 
-
     @Override
     public void Update(float delta) {
-        Position.setLocation(Position.x, Position.x + speed * delta);
+        if (Position.y > TargetLine && Position.y - Size.y < TargetLine) {
+            
+        }
+        Position.setLocation(Position.x, Position.y + Speed * delta);
     }
 }
