@@ -1,5 +1,8 @@
 package Main;
 
+import Entity.*;
+import Tool.InputListener;
+import Tool.MusicPlayer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -7,9 +10,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
-
-import Tool.InputListener;
-import Entity.*;
 
 public class GameRootPanel extends JPanel  {
     boolean IsRunning = false;
@@ -22,6 +22,9 @@ public class GameRootPanel extends JPanel  {
 
         addKeyListener(new InputListener());
         setFocusable(true);
+
+        MusicPlayer.LoadFile("Assests//GlitchyGlass.wav");
+        MusicPlayer.Play();
     }
 
     public void ReadMap(String path) {
