@@ -6,7 +6,6 @@ import Tool.MusicPlayer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
@@ -47,6 +46,8 @@ public class GameRootPanel extends JPanel  {
         MapDetail md = new MapDetail();
         md.Read("Assests//GlitchyGlass.csv");
 
+        MusicPlayer.LoadSound("Assests//hit.wav", "hit");
+        MusicPlayer.LoadSound("Assests//miss.wav", "miss");
         MusicPlayer.LoadMusic("Assests//GlitchyGlass.wav");
         MusicPlayer.SetStartPosition(20000);
         MusicPlayer.Play();
@@ -107,10 +108,8 @@ public class GameRootPanel extends JPanel  {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
 
         // paint background
-        g2.setBackground(Color.GRAY);
 
         // paint ruler
         g.setColor(Color.RED);

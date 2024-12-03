@@ -3,7 +3,6 @@ package Tool;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -15,7 +14,7 @@ public class MusicPlayer {
     public static String FilePath;
     public static long Start;
     public static Clip Audio;
-    public static Map<String ,Clip> Sounds = new HashMap<String ,Clip>();
+    public static Map<String ,Clip> Sounds = new HashMap<>();
 
     public static void LoadMusic(String path) {
         FilePath = path;
@@ -56,7 +55,14 @@ public class MusicPlayer {
     }
 
     public static int GetCurrentTime() {
-        return (int)Audio.getMicrosecondPosition();
+        return (int) Audio.getMicrosecondPosition();
+    }
+    
+    public static void PlaySound(String name) {
+        if (Sounds.containsKey(name)) {
+            Sounds.get(name).start();
+        }
+        Sounds.get(name).setMicrosecondPosition(0);
     }
     
     public static void Play() {

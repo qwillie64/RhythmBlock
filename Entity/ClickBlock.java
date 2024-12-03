@@ -1,11 +1,11 @@
 package Entity;
 
-import java.awt.Graphics;
-import java.awt.Rectangle;
-
 import Main.BlockState;
 import Main.ObjectManager;
 import Tool.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 public class ClickBlock extends Block{
     
@@ -22,15 +22,17 @@ public class ClickBlock extends Block{
     @Override
     public void Update(float delta) {
         if (State == BlockState.ACTIVE) {
+            // 點擊成功 -> State.FINISH
+            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, ObjectManager.DetectLine.Body)) {
+                State = BlockState.FINISH;
+                color = Color.GREEN;
+            }
+
             // 超線未點 -> Miss, State.DEAD
             if (Tool.IsOver(Body, ObjectManager.DetectLine.Body)) {
                 State = BlockState.DEAD;
+                color = Color.RED;
                 return;
-            }
-
-            // 點擊成功 -> State.FINISH
-            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, ObjectManager.DetectLine.Body)) {
-            State = BlockState.FINISH;
             }
         }
 

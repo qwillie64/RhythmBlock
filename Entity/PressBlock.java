@@ -32,12 +32,14 @@ public class PressBlock extends Block {
             // 超線未點 -> Miss, State.DEAD
             if (Tool.IsOver(HitBody, ObjectManager.DetectLine.Body)) {
                 State = BlockState.DEAD;
+                color = Color.RED;
                 return;
             }
 
             // 點擊成功 -> State.KEEP
             if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(HitBody, ObjectManager.DetectLine.Body)) {
                 State = BlockState.KEEP;
+                color = Color.GREEN;
             }
         }
         else if (State == BlockState.KEEP) {
@@ -49,6 +51,7 @@ public class PressBlock extends Block {
             // 長按失敗 -> State.DEAD
             if (!InputListener.IsKeyPress(HitKey) && Tool.IsCollision(Body, ObjectManager.DetectLine.Body)) {
                 State = BlockState.DEAD;
+                color = Color.RED;
                 return;
             }
         }

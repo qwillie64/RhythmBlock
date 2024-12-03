@@ -9,7 +9,7 @@ public class Tool {
     }
 
     public static boolean IsOver(Rectangle r1, Rectangle r2) {
-        return r1.y > r2.y + r2.height;
+        return r1.y - r1.width > r2.y + r2.height;
     }
 
     public static Rectangle GetPart(Rectangle r, float rate) {

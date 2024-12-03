@@ -1,6 +1,7 @@
 package Main;
 
 import Entity.ClickBlock;
+import Entity.PressBlock;
 import Tool.Setting;
 import java.awt.Rectangle;
 import java.io.BufferedReader;
@@ -45,14 +46,17 @@ public class MapDetail {
         }
 
         for (Note note : Notes) {
+            int bdp = (int) (6 * (float) 60 / BPM);
+            int y = ObjectManager.DetectLine.Body.y - bdp * 250 - note.duration * 20;
+
             switch (note.type) {
                 case 0:
-                    int y = ObjectManager.DetectLine.Body.y - (int)(6 * (float)60 / BPM) * 250 - note.duration * 20;
-                    ObjectManager.AddBlock_Stay(new ClickBlock(new Rectangle(note.channel * 60, y, 50, note.duration * 20),
-                            250, Setting.KeySet.get(note.channel), note.time - (int)(6 * (float)60 / BPM) * 1000000, note.duration));
+                    ObjectManager.AddBlock_Stay(new ClickBlock(new Rectangle(note.channel * 60, y, 50, note.duration * 30),
+                            250f, Setting.KeySet.get(note.channel), note.time - bdp * 1000000 - 4000, note.duration));
                     break;
                 case 1:
-                    
+                    ObjectManager.AddBlock_Stay(new PressBlock(new Rectangle(note.channel * 60, y, 50, note.duration * 30),
+                            250f, Setting.KeySet.get(note.channel), 0.3f, note.time - bdp * 1000000 - 4000, note.duration));
                     break;
                 default:
                     throw new AssertionError();
