@@ -25,7 +25,7 @@ public class ObjectManager {
     
     public static void Update(float delta) {
         ActiveBlockCollection.removeIf(obj -> obj.State == BlockState.FINISH);
-        ActiveBlockCollection.removeIf(obj -> obj.State == BlockState.DEAD);
+        // ActiveBlockCollection.removeIf(obj -> obj.State == BlockState.DEAD);
         StayBlockCollection.removeIf(obj -> obj.State == BlockState.ACTIVE);
 
         for (Block block : ActiveBlockCollection) {

@@ -1,13 +1,12 @@
 package Main;
 
 import Entity.*;
+import Score.ScoreManager;
 import Tool.InputListener;
 import Tool.MusicPlayer;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 
 public class GameRootPanel extends JPanel  {
@@ -35,7 +34,6 @@ public class GameRootPanel extends JPanel  {
     public void Run() {
         long lastUpdateTime = System.nanoTime();
         float time = 0;
-        float bpm_time = 0;
         final float timer = 0.3f;
         final float DELTA = 1f / TargetFPS;
         final float Bar = 60 / BPM;
@@ -51,6 +49,10 @@ public class GameRootPanel extends JPanel  {
         MusicPlayer.LoadMusic("Assests//GlitchyGlass.wav");
         MusicPlayer.SetStartPosition(20000);
         MusicPlayer.Play();
+
+        ScoreManager.SetUp(Judgment.PERFECT, 100);
+        ScoreManager.SetUp(Judgment.GOOD, 50);
+        ScoreManager.SetUp(Judgment.MISS, -10);
         
         while (IsRunning) {
             long currentTime = System.nanoTime();
@@ -64,23 +66,12 @@ public class GameRootPanel extends JPanel  {
             // repaint all graphics
             paintImmediately(0, 0, getWidth(), getHeight());
 
-            // update input
-            // System.out.println(InputListener.ToString());
-            InputListener.Refresh();
-
             // 定時更新運行資訊
             time += lastUpdateLength;
             if (time >= timer) {
                 System.out.println("FPS : " + delta * TargetFPS);
-                System.out.println("Music : " + MusicPlayer.GetCurrentTime());
+                // System.out.println("Music : " + MusicPlayer.GetCurrentTime());
                 time = 0;
-            }
-
-            bpm_time += lastUpdateLength;
-            if (bpm_time >= 4 * Bar) {
-                // ObjectManager.AddBlock_Stay(new PressBlock(new Rectangle(0, 0, 50, 100), 200, KeyEvent.VK_A, 0.3f));
-                // ObjectManager.AddBlock_Stay(new ClickBlock(new Rectangle(80,0,50, 30), 200, KeyEvent.VK_S));
-                bpm_time = 0;
             }
 
             try {
@@ -95,13 +86,7 @@ public class GameRootPanel extends JPanel  {
     }
 
     protected void Update(float delta) {
-        if (InputListener.IsKeyClick(KeyEvent.VK_UP)) {
-            TargetFPS = TargetFPS + 10;
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_DOWN)) {
-            TargetFPS = TargetFPS - 10;
-        }
-
+        InputListener.Refresh();
         ObjectManager.Update(delta);
     }
 
@@ -111,11 +96,10 @@ public class GameRootPanel extends JPanel  {
 
         // paint background
 
-        // paint ruler
-        g.setColor(Color.RED);
-        for (int i = 0; i < 10; i++) {
-            g.drawLine(0, i * 30, getWidth(), i * 30);
-        }
+
+        // paint score
+        char[] data = String.format("Score : %d", ScoreManager.GetCurrentScore()).toCharArray();
+        g.drawChars(data, 0, data.length, 10, 10);
 
         // paint all object
         ObjectManager.paintComponent(g);

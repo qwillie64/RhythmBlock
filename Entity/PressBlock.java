@@ -14,15 +14,15 @@ public class PressBlock extends Block {
         super(body, speed, hitKey, timeMark, duration);
         this.HitRate = hitRate;
         this.HitBody = Tool.GetPart(body, hitRate);
-        this.color = Color.GRAY;
+        this.BackgroundColor = Color.GRAY;
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        g.setColor(color);
+        g.setColor(BackgroundColor);
         g.fillRect(Body.x, Body.y, Body.width, Body.height);
 
-        g.setColor(color.brighter());
+        g.setColor(BackgroundColor.brighter());
         g.fillRect(HitBody.x, HitBody.y, HitBody.width, HitBody.height);
     }
 
@@ -31,28 +31,35 @@ public class PressBlock extends Block {
         if (State == BlockState.ACTIVE) {
             // 超線未點 -> Miss, State.DEAD
             if (Tool.IsOver(HitBody, ObjectManager.DetectLine.Body)) {
-                State = BlockState.DEAD;
-                color = Color.RED;
+                Kill();
                 return;
             }
 
             // 點擊成功 -> State.KEEP
             if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(HitBody, ObjectManager.DetectLine.Body)) {
                 State = BlockState.KEEP;
-                color = Color.GREEN;
+                BackgroundColor = Color.YELLOW;
             }
         }
         else if (State == BlockState.KEEP) {
             // 過線 -> State.FINISH
             if (Tool.IsOver(Body, ObjectManager.DetectLine.Body)) {
-                State = BlockState.FINISH;
+                Finish(Judgment.PERFECT);
             }
-            
+
             // 長按失敗 -> State.DEAD
             if (!InputListener.IsKeyPress(HitKey) && Tool.IsCollision(Body, ObjectManager.DetectLine.Body)) {
-                State = BlockState.DEAD;
-                color = Color.RED;
+                Finish(Judgment.GOOD);
                 return;
+            }
+        }
+        else if (State == BlockState.DEAD) {
+            Speed -= 10;
+            Alpha -= 20;
+            BackgroundColor = Tool.Combine(BackgroundColor, Alpha);
+
+            if (Speed < 100) {
+                State = BlockState.FINISH;
             }
         }
 

@@ -8,7 +8,11 @@ public class DetectLine extends GameObject{
 
     public DetectLine(Rectangle body) {
         this.Body = body;
-        this.color = Color.GREEN;
+        this.BackgroundColor = Color.GREEN;
+    }
+    
+    public boolean IsCollision(Rectangle r) {
+        return r.intersects(Body);
     }
     
     @Override
@@ -18,7 +22,7 @@ public class DetectLine extends GameObject{
 
     @Override
     public void paintComponent(Graphics g) {
-        g.setColor(color);
+        g.setColor(BackgroundColor);
         g.fillRect(Body.x, Body.y, Body.width, Body.height);
     }
 }

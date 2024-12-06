@@ -1,6 +1,7 @@
 package Entity;
 
 import Main.BlockState;
+import Main.Judgment;
 import Main.ObjectManager;
 import Tool.*;
 import java.awt.Color;
@@ -15,7 +16,7 @@ public class ClickBlock extends Block{
     
     @Override
     public void paintComponent(Graphics g) {
-        g.setColor(color);
+        g.setColor(BackgroundColor);
         g.fillRect(Body.x, Body.y, Body.width, Body.height);
     }
 
@@ -24,15 +25,22 @@ public class ClickBlock extends Block{
         if (State == BlockState.ACTIVE) {
             // 點擊成功 -> State.FINISH
             if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, ObjectManager.DetectLine.Body)) {
-                State = BlockState.FINISH;
-                color = Color.GREEN;
+                Finish(Judgment.PERFECT);
             }
 
             // 超線未點 -> Miss, State.DEAD
             if (Tool.IsOver(Body, ObjectManager.DetectLine.Body)) {
-                State = BlockState.DEAD;
-                color = Color.RED;
+                Kill();
                 return;
+            }
+        }
+        else if (State == BlockState.DEAD) {
+            Speed -= 10;
+            Alpha -= 20;
+            BackgroundColor = Tool.Combine(BackgroundColor, Alpha);
+
+            if (Speed < 100) {
+                State = BlockState.FINISH;
             }
         }
 

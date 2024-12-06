@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 
 public abstract class GameObject {
     public Rectangle Body;
-    public Color color;
+    public Color BackgroundColor;
 
     public Point GetSize() {
         return new Point(Body.width, Body.height);
