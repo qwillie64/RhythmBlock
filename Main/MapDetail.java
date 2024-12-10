@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
+import org.json.*;
 
 public class MapDetail {
     public class Note {
@@ -51,16 +52,33 @@ public class MapDetail {
 
             switch (note.type) {
                 case 0:
-                    ObjectManager.AddBlock_Stay(new ClickBlock(new Rectangle(note.channel * 60, y, 50, note.duration * 30),
+                    ObjectManager.AddBlock_Stay(new ClickBlock(
+                            new Rectangle(note.channel * 60, y, 50, note.duration * 30),
                             250f, Setting.KeySet.get(note.channel), note.time - bdp * 1000000 - 4000, note.duration));
                     break;
                 case 1:
-                    ObjectManager.AddBlock_Stay(new PressBlock(new Rectangle(note.channel * 60, y, 50, note.duration * 30),
-                            250f, Setting.KeySet.get(note.channel), 0.3f, note.time - bdp * 1000000 - 4000, note.duration));
+                    ObjectManager
+                            .AddBlock_Stay(new PressBlock(new Rectangle(note.channel * 60, y, 50, note.duration * 30),
+                                    250f, Setting.KeySet.get(note.channel), 0.3f, note.time - bdp * 1000000 - 4000,
+                                    note.duration));
                     break;
                 default:
                     throw new AssertionError();
             }
+        }
+    }
+    
+    public void test() {
+        //JSON字串
+        String json=jsondata.toString();
+
+        JSONObject obj = new JSONObject(json);
+
+        JSONArray parkingLots = obj.getJSONArray("parkingLots");
+        for (int i = 0; i < parkingLots.length(); i++)
+        {
+        //取得陣列中json物件屬性
+        String areaName = parkingLots.getJSONObject(i).getString("areaName");
         }
     }
 }
