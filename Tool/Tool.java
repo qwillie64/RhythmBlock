@@ -21,7 +21,11 @@ public class Tool {
     }
     
     public static boolean IsCollision(Rectangle r1, Rectangle r2) {
-        return r1.intersects(r2);
+        return r1.y + r1.height >= r2.y && r1.y < r2.y;
+    }
+
+    public static float GetCollisionPart(Rectangle r1, Rectangle r2) {
+        return (r1.y - r2.y) / (float) r1.height;
     }
 
     public static boolean IsOver(Rectangle r1, Rectangle r2) {

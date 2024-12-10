@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+
 public class Block extends GameObject {
     public float Speed;
     public int TimeMark;

@@ -9,15 +9,13 @@ public class InputListener implements KeyListener {
 
     private static final Set<Integer> pressedKeys = new HashSet<>();
     private static final Set<Integer> clickedKeys = new HashSet<>();
-    private static final int KEEP = 5;
-    private static int keep = 0;
+    private static final int KEEP = 10;
+    public static int keep = 0;
 
     public static void Refresh() {
-        keep++;
-
-        if (keep >= KEEP) {
-            clickedKeys.clear();
-            keep = 0;
+        clickedKeys.clear();
+        if (keep > 0) {
+            keep--;
         }
     }
     
@@ -49,6 +47,7 @@ public class InputListener implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if (!pressedKeys.contains(e.getKeyCode())) {
             clickedKeys.add(e.getKeyCode());
+            keep = KEEP;
         }
 
         pressedKeys.add(e.getKeyCode());

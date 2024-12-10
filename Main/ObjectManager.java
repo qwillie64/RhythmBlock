@@ -32,8 +32,12 @@ public class ObjectManager {
             block.Update(delta);
         }
 
+        // 微秒誤差 : 方塊早多久出現
+        int offset = 150000;
         for (Block block : StayBlockCollection) {
-            if (MusicPlayer.GetCurrentTime() >= block.TimeMark) {
+            int t_offset = MusicPlayer.GetCurrentTime() + offset - block.TimeMark;
+            if (t_offset >= 0) {
+                block.Body.y += (int)(block.Speed * t_offset / 1000000);
                 block.State = BlockState.ACTIVE;
                 ActiveBlockCollection.add(block);
             }

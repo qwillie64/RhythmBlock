@@ -7,7 +7,7 @@ public class Main extends JFrame{
 
     public Main() {
         setTitle("Rhythm Block");
-        setSize(300, 400);
+        setSize(400, 600);
 
         addWindowListener(new java.awt.event.WindowAdapter() {
         @Override

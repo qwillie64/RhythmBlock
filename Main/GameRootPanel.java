@@ -4,6 +4,7 @@ import Entity.*;
 import Score.ScoreManager;
 import Tool.InputListener;
 import Tool.MusicPlayer;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -34,7 +35,7 @@ public class GameRootPanel extends JPanel  {
     public void Run() {
         long lastUpdateTime = System.nanoTime();
         float time = 0;
-        final float timer = 0.3f;
+        final float timer = 0.1f;
         final float DELTA = 1f / TargetFPS;
         final float Bar = 60 / BPM;
         IsRunning = true;
@@ -69,7 +70,8 @@ public class GameRootPanel extends JPanel  {
             // 定時更新運行資訊
             time += lastUpdateLength;
             if (time >= timer) {
-                System.out.println("FPS : " + delta * TargetFPS);
+                // System.out.println("FPS : " + delta * TargetFPS);
+                // System.out.println(InputListener.ToString());
                 // System.out.println("Music : " + MusicPlayer.GetCurrentTime());
                 time = 0;
             }
@@ -86,8 +88,8 @@ public class GameRootPanel extends JPanel  {
     }
 
     protected void Update(float delta) {
-        InputListener.Refresh();
         ObjectManager.Update(delta);
+        InputListener.Refresh();
     }
 
     @Override
@@ -101,7 +103,13 @@ public class GameRootPanel extends JPanel  {
         char[] data = String.format("Score : %d", ScoreManager.GetCurrentScore()).toCharArray();
         g.drawChars(data, 0, data.length, 10, 10);
 
+        // paint input listener
+        g.setColor(Color.BLUE);
+        g.drawRect(getWidth() - 20, 10, 10, 100);
+        g.fillRect(getWidth() - 20, 10 + (10 - InputListener.keep) * 10, 10, InputListener.keep * 10);
+
         // paint all object
+
         ObjectManager.paintComponent(g);
     }
 }
