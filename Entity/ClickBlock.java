@@ -1,8 +1,8 @@
 package Entity;
 
-import Main.BlockState;
-import Main.Judgment;
-import Main.ObjectManager;
+import Game.GameMap;
+import State.BlockState;
+import State.Judgment;
 import Tool.*;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -23,13 +23,13 @@ public class ClickBlock extends Block{
     public void Update(float delta) {
         if (State == BlockState.ACTIVE) {
             // 點擊成功 -> State.FINISH
-            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, ObjectManager.DetectLine.Body)) {
+            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, GameMap.DetectLine.Body)) {
                 System.out.println(InputListener.ToString() + " -> Hit");
                 Finish(Judgment.PERFECT);
             }
 
             // 超線未點 -> Miss, State.DEAD
-            if (Tool.IsOver(Body, ObjectManager.DetectLine.Body)) {
+            if (Tool.IsOver(Body, GameMap.DetectLine.Body)) {
                 System.out.println(InputListener.ToString() + " -> Miss");
                 Kill();
                 return;

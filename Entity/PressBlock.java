@@ -1,7 +1,8 @@
 package Entity;
 
-import Main.*;
+import State.*;
 import Tool.*;
+import Game.GameMap;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -30,25 +31,25 @@ public class PressBlock extends Block {
     public void Update(float delta) {
         if (State == BlockState.ACTIVE) {
             // 超線未點 -> Miss, State.DEAD
-            if (Tool.IsOver(HitBody, ObjectManager.DetectLine.Body)) {
+            if (Tool.IsOver(HitBody, GameMap.DetectLine.Body)) {
                 Kill();
                 return;
             }
 
             // 點擊成功 -> State.KEEP
-            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(HitBody, ObjectManager.DetectLine.Body)) {
+            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(HitBody, GameMap.DetectLine.Body)) {
                 State = BlockState.KEEP;
                 BackgroundColor = Color.YELLOW;
             }
         }
         else if (State == BlockState.KEEP) {
             // 過線 -> State.FINISH
-            if (Tool.IsOver(Body, ObjectManager.DetectLine.Body)) {
+            if (Tool.IsOver(Body, GameMap.DetectLine.Body)) {
                 Finish(Judgment.PERFECT);
             }
 
             // 長按失敗 -> State.DEAD
-            if (!InputListener.IsKeyPress(HitKey) && Tool.IsCollision(Body, ObjectManager.DetectLine.Body)) {
+            if (!InputListener.IsKeyPress(HitKey) && Tool.IsCollision(Body, GameMap.DetectLine.Body)) {
                 Finish(Judgment.GOOD);
                 return;
             }

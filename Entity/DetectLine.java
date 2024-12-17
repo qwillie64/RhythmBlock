@@ -14,7 +14,7 @@ public class DetectLine extends GameObject{
     public boolean IsCollision(Rectangle r) {
         return r.intersects(Body);
     }
-    
+
     @Override
     public void Update(float delta) {
 

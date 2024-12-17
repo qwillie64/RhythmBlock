@@ -1,10 +1,8 @@
 package Game;
 
 import Entity.DetectLine;
-import Main.Judgment;
-import Main.MapDetail;
-import Main.ObjectManager;
 import Score.ScoreManager;
+import State.Judgment;
 import Tool.InputListener;
 import Tool.MusicPlayer;
 import java.awt.Color;
@@ -12,24 +10,26 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class GameRoot extends Game{
-    
+    private GameMap gameMap;
+
     public GameRoot() {
-        super(600, 400);
+        super();
+
+        Windows.setSize(400, 600);
     }
 
     @Override
     protected void initial() {
         super.initial();
 
-        ObjectManager.SetDetectLine(new DetectLine(new Rectangle(0, 300, getWidth(), 5)));
-
-        MapDetail md = new MapDetail();
-        md.Read("Assests//GlitchyGlass.csv");
+        gameMap = new GameMap();
+        gameMap.SetDetectLine(new DetectLine(new Rectangle(0, 300, Windows.getWidth(), 2)));
+        gameMap.read("Assests//Daydreams.json");
 
         MusicPlayer.LoadSound("Assests//hit.wav", "hit");
         MusicPlayer.LoadSound("Assests//miss.wav", "miss");
         MusicPlayer.LoadMusic("Assests//GlitchyGlass.wav");
-        MusicPlayer.SetStartPosition(20000);
+        MusicPlayer.SetStartPosition(10000);
         MusicPlayer.Play();
 
         ScoreManager.SetUp(Judgment.PERFECT, 100);
@@ -41,9 +41,8 @@ public class GameRoot extends Game{
     protected void update(float delta) {
         super.update(delta);
 
-        ObjectManager.Update(delta);
+        gameMap.update(delta);
         InputListener.Refresh();
-        
     }
     
     @Override
@@ -64,8 +63,6 @@ public class GameRoot extends Game{
 
         // paint all object
 
-        ObjectManager.paintComponent(g);
-        
-        
+        gameMap.paintComponent(g);
     }
 }

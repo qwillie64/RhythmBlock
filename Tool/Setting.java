@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Setting {
+
+    public static float Speed = 250f;
+    public static int Offset = 0;
+    
     public static Map<Integer, Integer> KeySet = new HashMap<Integer, Integer>(){{
             put(0, KeyEvent.VK_A);
             put(1, KeyEvent.VK_S);

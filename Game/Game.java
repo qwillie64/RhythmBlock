@@ -16,8 +16,8 @@ public class Game extends JPanel {
     private float runningTime = 0;
 
 
-    public Game(int width, int height) {
-        setPreferredSize(new Dimension(width, height));
+    public Game() {
+        setPreferredSize(new Dimension(600, 400));
         setDoubleBuffered(true);
 
         addKeyListener(new InputListener());

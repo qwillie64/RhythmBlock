@@ -1,6 +1,6 @@
 package Score;
 
-import Main.Judgment;
+import State.Judgment;
 import java.util.HashMap;
 import java.util.Map;
 

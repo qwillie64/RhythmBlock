@@ -1,8 +1,8 @@
 package Entity;
 
-import Main.BlockState;
-import Main.Judgment;
 import Score.ScoreManager;
+import State.BlockState;
+import State.Judgment;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
