@@ -1,5 +1,6 @@
 package Main;
 
+import org.json.*;
 import Entity.ClickBlock;
 import Entity.PressBlock;
 import Tool.Setting;
@@ -7,7 +8,7 @@ import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
-import org.json.*;
+
 
 public class MapDetail {
     public class Note {
@@ -70,16 +71,17 @@ public class MapDetail {
     
     public void test() {
         //JSON字串
-        String json=jsondata.toString();
+        String json = "{text:234}";
 
         JSONObject obj = new JSONObject(json);
+        System.out.println(obj);
 
-        JSONArray parkingLots = obj.getJSONArray("parkingLots");
-        for (int i = 0; i < parkingLots.length(); i++)
-        {
-        //取得陣列中json物件屬性
-        String areaName = parkingLots.getJSONObject(i).getString("areaName");
-        }
+        // JSONArray parkingLots = obj.getJSONArray("parkingLots");
+        // for (int i = 0; i < parkingLots.length(); i++)
+        // {
+        // //取得陣列中json物件屬性
+        // String areaName = parkingLots.getJSONObject(i).getString("areaName");
+        // }
     }
 }
 
