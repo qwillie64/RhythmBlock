@@ -9,6 +9,7 @@ import Entity.PressBlock;
 import State.BlockState;
 import Tool.MusicPlayer;
 import Tool.Setting;
+import java.awt.Dimension;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -22,6 +23,7 @@ public class GameMap {
     private float bpm;
     private int start;
     private String name;
+    private int time_d;
 
     public static List<Block> ActiveBlockCollection;
     public static List<Block> StayBlockCollection;
@@ -47,29 +49,29 @@ public class GameMap {
             bpm = jsonObject.getFloat("bpm");
             start = jsonObject.getInt("start");
             name = jsonObject.getString("name");
+            time_d = (int) (DetectLine.Body.getCenterY() * 1000000f / Setting.Speed);
             JSONArray blocks = jsonObject.getJSONArray("blocks");
 
             // process block
-            int bdp = (int) (6 * 60f / bpm);
+            float b_height = (Setting.Speed * 60f / bpm) / 3f;
             for (int i = 0; i < blocks.length(); i++) {
                 JSONObject block = blocks.getJSONObject(i);
                 int channel = block.getInt("channel");
                 int b_start = block.getInt("start");
                 int type = block.getInt("type");
                 int period = block.getInt("period");
-                int y = DetectLine.Body.y - bdp * (int)Setting.Speed - (period/100) * 20;
 
                 switch (type) {
                     case 0:
                         StayBlockCollection.add(new ClickBlock(
-                                new Rectangle(channel * 60, y, 50, 30),
-                                Setting.Speed, Setting.KeySet.get(channel), b_start - bdp * 1000000 - 4000,
+                                new Rectangle(channel * 60, -(int)b_height, 50, (int)b_height),
+                                Setting.Speed, Setting.KeySet.get(channel), b_start,
                                 period));
                         break;
                     case 1:
                         StayBlockCollection.add(new PressBlock(
-                                new Rectangle(channel * 60, -100, 50, 90),
-                                Setting.Speed, Setting.KeySet.get(channel), 0.3f, b_start - bdp * 1000000 - 4000,
+                                new Rectangle(channel * 60, -(int)b_height, 50, (int)(b_height * period / 100000f)),
+                                Setting.Speed, Setting.KeySet.get(channel), 0.3f, b_start,
                                 period));
                         break;
                     default:
@@ -86,13 +88,11 @@ public class GameMap {
             block.Update(delta);
         }
 
-        // 微秒誤差 : 方塊早多久出現
-        int offset = 150;
-        System.out.println(MusicPlayer.GetCurrentTime());
+        
         for (Block block : StayBlockCollection) {
-            int t_offset = MusicPlayer.GetCurrentTime() + offset - block.TimeMark;
-            if (t_offset >= 0) {
-                block.Body.y += (int) (block.Speed * t_offset / 1000000);
+            int off = MusicPlayer.GetCurrentTime() - block.TimeMark + time_d;
+            if (off >= -70000) {
+                block.Body.y -= (int) ((off / 1000000f) * Setting.Speed);
                 block.State = BlockState.ACTIVE;
                 ActiveBlockCollection.add(block);
             }

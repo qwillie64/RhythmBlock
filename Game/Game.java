@@ -88,7 +88,7 @@ public class Game extends JPanel {
     }
     
     protected void update(float delta) {
-        InputListener.Refresh();
+
     }
 
     @Override

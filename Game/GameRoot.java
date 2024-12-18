@@ -28,7 +28,7 @@ public class GameRoot extends Game{
 
         MusicPlayer.LoadSound("Assests//hit.wav", "hit");
         MusicPlayer.LoadSound("Assests//miss.wav", "miss");
-        MusicPlayer.LoadMusic("Assests//GlitchyGlass.wav");
+        MusicPlayer.LoadMusic("Assests//Daydreams_edit.wav");
         MusicPlayer.SetStartPosition(10000);
         MusicPlayer.Play();
 
@@ -39,7 +39,6 @@ public class GameRoot extends Game{
     
     @Override
     protected void update(float delta) {
-        super.update(delta);
 
         gameMap.update(delta);
         InputListener.Refresh();
@@ -62,7 +61,6 @@ public class GameRoot extends Game{
         g.fillRect(getWidth() - 20, 10 + (10 - InputListener.keep) * 10, 10, InputListener.keep * 10);
 
         // paint all object
-
         gameMap.paintComponent(g);
     }
 }
