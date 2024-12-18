@@ -53,7 +53,7 @@ public class GameMap {
             JSONArray blocks = jsonObject.getJSONArray("blocks");
 
             // process block
-            float b_height = (Setting.Speed * 60f / bpm) / 3f;
+            float b_height = (Setting.Speed * 60f / bpm) / 4f;
             for (int i = 0; i < blocks.length(); i++) {
                 JSONObject block = blocks.getJSONObject(i);
                 int channel = block.getInt("channel");
@@ -65,14 +65,12 @@ public class GameMap {
                     case 0:
                         StayBlockCollection.add(new ClickBlock(
                                 new Rectangle(channel * 60, -(int)b_height, 50, (int)b_height),
-                                Setting.Speed, Setting.KeySet.get(channel), b_start,
-                                period));
+                                Setting.Speed, Setting.KeySet.get(channel), b_start));
                         break;
                     case 1:
                         StayBlockCollection.add(new PressBlock(
-                                new Rectangle(channel * 60, -(int)b_height, 50, (int)(b_height * period / 100000f)),
-                                Setting.Speed, Setting.KeySet.get(channel), 0.3f, b_start,
-                                period));
+                                new Rectangle(channel * 60, -(int)b_height, 50, (int)b_height),
+                                Setting.Speed, Setting.KeySet.get(channel), b_start, (int)(Setting.Speed * period / 1000000f)));
                         break;
                     default:
                         throw new AssertionError();

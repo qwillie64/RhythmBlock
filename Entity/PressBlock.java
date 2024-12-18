@@ -1,20 +1,18 @@
 package Entity;
 
+import Game.GameMap;
 import State.*;
 import Tool.*;
-import Game.GameMap;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class PressBlock extends Block {
-    public float HitRate;
-    public Rectangle HitBody;
+    public Rectangle TailBody;
 
-    public PressBlock(Rectangle body, float speed, int hitKey, float hitRate, int timeMark, int duration) {
-        super(body, speed, hitKey, timeMark, duration);
-        this.HitRate = hitRate;
-        this.HitBody = Tool.GetPart(body, hitRate);
+    public PressBlock(Rectangle body, float speed, int hitKey, int timeMark, int tailHeight) {
+        super(body, speed, hitKey, timeMark);
+        this.TailBody = new Rectangle(body.x + body.width / 5, body.y - tailHeight, body.width - 2 * body.width / 5, tailHeight);
         this.BackgroundColor = Color.GRAY;
     }
 
@@ -24,32 +22,32 @@ public class PressBlock extends Block {
         g.fillRect(Body.x, Body.y, Body.width, Body.height);
 
         g.setColor(BackgroundColor.brighter());
-        g.fillRect(HitBody.x, HitBody.y, HitBody.width, HitBody.height);
+        g.fillRect(TailBody.x, TailBody.y, TailBody.width, TailBody.height);
     }
 
     @Override
     public void Update(float delta) {
         if (State == BlockState.ACTIVE) {
             // 超線未點 -> Miss, State.DEAD
-            if (Tool.IsOver(HitBody, GameMap.DetectLine.Body)) {
+            if (Tool.IsOver(Body, GameMap.DetectLine.Body)) {
                 Kill();
                 return;
             }
 
             // 點擊成功 -> State.KEEP
-            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(HitBody, GameMap.DetectLine.Body)) {
+            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, GameMap.DetectLine.Body)) {
                 State = BlockState.KEEP;
                 BackgroundColor = Color.YELLOW;
             }
         }
         else if (State == BlockState.KEEP) {
             // 過線 -> State.FINISH
-            if (Tool.IsOver(Body, GameMap.DetectLine.Body)) {
+            if (Tool.IsOver(TailBody, GameMap.DetectLine.Body)) {
                 Finish(Judgment.PERFECT);
             }
 
             // 長按失敗 -> State.DEAD
-            if (!InputListener.IsKeyPress(HitKey) && Tool.IsCollision(Body, GameMap.DetectLine.Body)) {
+            if (!InputListener.IsKeyPress(HitKey) && Tool.IsCollision(TailBody, GameMap.DetectLine.Body)) {
                 Finish(Judgment.GOOD);
                 return;
             }
@@ -65,6 +63,6 @@ public class PressBlock extends Block {
         }
 
         Body.y = (int) (Body.y + Speed * delta);
-        HitBody = Tool.GetPart(Body, HitRate);
+        TailBody.y = Body.y - TailBody.height;
     }
 }

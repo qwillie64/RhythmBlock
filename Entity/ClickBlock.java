@@ -9,8 +9,8 @@ import java.awt.Rectangle;
 
 public class ClickBlock extends Block{
     
-    public ClickBlock(Rectangle body, float speed, int hitKey, int timeMark, int duration) {
-        super(body, speed, hitKey, timeMark, duration);
+    public ClickBlock(Rectangle body, float speed, int hitKey, int timeMark) {
+        super(body, speed, hitKey, timeMark);
     }
     
     @Override

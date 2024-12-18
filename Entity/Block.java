@@ -11,17 +11,15 @@ import java.awt.Rectangle;
 public class Block extends GameObject {
     public float Speed;
     public int TimeMark;
-    public int Duration;
     public int HitKey;
     public int Alpha;
     public BlockState State;
 
-    public Block(Rectangle body, float speed, int hitKey, int timeMark, int duration) {
+    public Block(Rectangle body, float speed, int hitKey, int timeMark) {
         this.Body = body;
         this.Speed = speed;
         this.HitKey = hitKey;
         this.TimeMark = timeMark;
-        this.Duration = duration;
         this.Alpha = 255;
         this.BackgroundColor = Color.BLACK;
         this.State = BlockState.STAY;
