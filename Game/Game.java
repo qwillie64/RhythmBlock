@@ -1,6 +1,7 @@
 package Game;
 
 import Tool.InputListener;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JFrame;
@@ -11,12 +12,9 @@ public class Game extends JPanel implements Runnable{
     public boolean IsShowDetail = false;
     public boolean IsRunning = false;
     public final float Target_FPS = 120;
-    public final float Target_UPS = 60;
+    public final float Target_UPS = 100;
     public float Current_FPS;
     public float Current_UPS;
-    private float detailTimer = 0.5f;
-    
-    private float runningTime = 0;
 
     private Thread gameThread;
 
@@ -42,44 +40,6 @@ public class Game extends JPanel implements Runnable{
         Windows.setVisible(true);
     }
 
-    private void Run() {
-        long lastUpdateTime = System.nanoTime();
-        float time = 0;
-        final float DELTA = 1f / Target_FPS;
-
-        IsRunning = true;
-
-        while (IsRunning) {
-            long currentTime = System.nanoTime();
-            float lastUpdateLength = (float)(currentTime - lastUpdateTime) / 1000000000; // seconds
-            lastUpdateTime = currentTime;
-            float delta = lastUpdateLength / DELTA;
-
-            // update game state
-            update(lastUpdateLength);
-
-            // repaint all graphics
-            paintImmediately(0, 0, getWidth(), getHeight());
-
-            // 定時更新運行資訊
-            time += lastUpdateLength;
-            if (time >= detailTimer) {
-                Current_FPS = delta * Target_FPS;
-                runningTime += lastUpdateLength;
-                time = 0;
-            }
-
-            try {
-                long remaining = (long) ((lastUpdateTime - System.nanoTime() + DELTA * 1000000000) / 1000000);
-                if (remaining <= 0) {
-                    continue;
-                }
-                Thread.sleep(remaining);
-            } catch (InterruptedException ex) {
-            }
-        }
-    }
-
     public void Start() {
         initial();
 
@@ -98,10 +58,14 @@ public class Game extends JPanel implements Runnable{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-    }
 
-    public float getRunningTime() {
-        return runningTime;
+        if (IsShowDetail) {
+            g.setColor(Color.BLACK);
+            char[] data = String.format("FPS : %f", Current_FPS).toCharArray();
+            g.drawChars(data, 0, data.length, 10, 10);
+            data = String.format("UPS : %f", Current_UPS).toCharArray();
+            g.drawChars(data, 0, data.length, 10, 25);
+        }
     }
 
     @Override
@@ -111,7 +75,7 @@ public class Game extends JPanel implements Runnable{
 
 		long lastFrame = System.nanoTime();
 		long lastUpdate = System.nanoTime();
-		long lastTimeCheck = System.currentTimeMillis();
+        long lastTimeCheck = System.currentTimeMillis();
 
 		int frames = 0;
         int updates = 0;
@@ -130,20 +94,19 @@ public class Game extends JPanel implements Runnable{
 
 			// Update
             if (System.nanoTime() - lastUpdate >= timePerUpdate) {
-                update((float)(System.nanoTime() - lastUpdate) / 1000000000f);
+                update((float) (System.nanoTime() - lastUpdate) / 1000000000f);
                 lastUpdate = System.nanoTime();
                 updates++;
             }
 
-            // Check game state
+            // Reset
             if (System.currentTimeMillis() - lastTimeCheck >= 1000) {
                 Current_FPS = frames;
                 Current_UPS = updates;
-
-				frames = 0;
-				updates = 0;
-				lastTimeCheck = System.currentTimeMillis();
-			}
+                frames = 0;
+                updates = 0;
+                lastTimeCheck = System.currentTimeMillis();
+            }
 		}
     }
 }

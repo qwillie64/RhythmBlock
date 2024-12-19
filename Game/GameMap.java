@@ -7,12 +7,12 @@ import Entity.ClickBlock;
 import Entity.DetectLine;
 import Entity.PressBlock;
 import State.BlockState;
-import State.GameState;
 import Tool.MusicPlayer;
 import Tool.Setting;
-import java.awt.Dimension;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -25,23 +25,23 @@ public class GameMap {
     private int start;
     private String name;
     private int time_d;
+    private Point screenSize;
+
+    public final int CHANNEL_WIDTH = 100;
 
     public static List<Block> ActiveBlockCollection;
     public static List<Block> StayBlockCollection;
-    public static DetectLine DetectLine;
+    public static DetectLine DetectArea;
 
     
     public GameMap() {
+        screenSize = new Point(0, 0);
         ActiveBlockCollection = new LinkedList<>();
         StayBlockCollection = new LinkedList<>();
-        DetectLine = null;
-    }
-
-    public void SetDetectLine(DetectLine detectLine) {
-        DetectLine = detectLine;
+        DetectArea = DetectLine.Empty();
     }
     
-    public void read(String path) {
+    public void read(String path, Point size) {
         try {
             String content = new String(Files.readAllBytes(Paths.get("Assests/Daydreams.json")));
             JSONObject jsonObject = new JSONObject(content);
@@ -50,11 +50,12 @@ public class GameMap {
             bpm = jsonObject.getFloat("bpm");
             start = jsonObject.getInt("start");
             name = jsonObject.getString("name");
-            time_d = (int) (DetectLine.Body.getCenterY() * 1000000f / Setting.Speed);
             JSONArray blocks = jsonObject.getJSONArray("blocks");
 
             // process block
             float b_height = (Setting.Speed * 60f / bpm) / 4f;
+            DetectArea = new DetectLine(new Rectangle(0, 2 * size.y / 3, 4 * CHANNEL_WIDTH, (int) b_height));
+            time_d = (int) (DetectArea.Body.getCenterY() * 1000000f / Setting.Speed);
             for (int i = 0; i < blocks.length(); i++) {
                 JSONObject block = blocks.getJSONObject(i);
                 int channel = block.getInt("channel");
@@ -65,12 +66,14 @@ public class GameMap {
                 switch (type) {
                     case 0:
                         StayBlockCollection.add(new ClickBlock(
-                                new Rectangle(channel * 60, -(int) b_height, 50, (int) b_height),
+                                new Rectangle(channel * CHANNEL_WIDTH + 2, -(int) b_height, CHANNEL_WIDTH - 4,
+                                        (int) b_height),
                                 Setting.Speed, Setting.KeySet.get(channel), b_start));
                         break;
                     case 1:
                         StayBlockCollection.add(new PressBlock(
-                                new Rectangle(channel * 60, -(int) b_height, 50, (int) b_height),
+                                new Rectangle(channel * CHANNEL_WIDTH + 2, -(int) b_height, CHANNEL_WIDTH - 4,
+                                        (int) b_height),
                                 Setting.Speed, Setting.KeySet.get(channel), b_start,
                                 (int) (Setting.Speed * period / 1000000f)));
                         break;
@@ -78,6 +81,8 @@ public class GameMap {
                         throw new AssertionError();
                 }
             }
+            
+            screenSize = new Point(4 * CHANNEL_WIDTH, size.y);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -91,7 +96,7 @@ public class GameMap {
         
         for (Block block : StayBlockCollection) {
             int off = MusicPlayer.GetCurrentTime() - block.TimeMark + time_d;
-            if (off >= -70000) {
+            if (off >= -55000) {
                 block.Body.y -= (int) ((off / 1000000f) * Setting.Speed);
                 block.State = BlockState.ACTIVE;
                 ActiveBlockCollection.add(block);
@@ -107,6 +112,10 @@ public class GameMap {
             block.paintComponent(g);
         }
 
-        DetectLine.paintComponent(g);
+        DetectArea.paintComponent(g);
+    }
+
+    public Point getScreenSize() {
+        return screenSize;
     }
 }

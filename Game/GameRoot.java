@@ -1,6 +1,5 @@
 package Game;
 
-import Entity.DetectLine;
 import Score.ScoreManager;
 import State.GameState;
 import State.Judgment;
@@ -8,7 +7,8 @@ import Tool.InputListener;
 import Tool.MusicPlayer;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 
 public class GameRoot extends Game{
@@ -18,7 +18,7 @@ public class GameRoot extends Game{
     public GameRoot() {
         super();
 
-        Windows.setSize(400, 600);
+        Windows.setSize(800, 600);
     }
 
     @Override
@@ -26,8 +26,7 @@ public class GameRoot extends Game{
         super.initial();
 
         gameMap = new GameMap();
-        gameMap.SetDetectLine(new DetectLine(new Rectangle(0, 300, Windows.getWidth(), 2)));
-        gameMap.read("Assests//Daydreams.json");
+        gameMap.read("Assests//Daydreams.json", new Point(Windows.getBounds().width, Windows.getBounds().height));
 
 
         MusicPlayer.LoadSound("Assests//hit.wav", "hit");
@@ -40,6 +39,7 @@ public class GameRoot extends Game{
         ScoreManager.SetUp(Judgment.GOOD, 50);
         ScoreManager.SetUp(Judgment.MISS, -10);
 
+        IsShowDetail = true;
         gameState = GameState.PLAYING;
     }
     
@@ -49,10 +49,10 @@ public class GameRoot extends Game{
         if (InputListener.IsKeyClick(KeyEvent.VK_ESCAPE)) {
             if (gameState == GameState.PAUSE) {
                 MusicPlayer.Play();
-                gameState = gameState.PLAYING;
+                gameState = GameState.PLAYING;
             } else {
                 MusicPlayer.pause();
-                gameState = gameState.PAUSE;
+                gameState = GameState.PAUSE;
             }
 
         }
@@ -63,23 +63,25 @@ public class GameRoot extends Game{
 
         super.update(delta);
     }
-    
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
 
-        // paint background
+        // paint all object
+        g2.translate((Windows.getWidth() - gameMap.getScreenSize().x) / 2, 0);
+        gameMap.paintComponent(g);
 
         // paint score
+        g.setColor(Color.BLACK);
         char[] data = String.format("Score : %d", ScoreManager.GetCurrentScore()).toCharArray();
         g.drawChars(data, 0, data.length, 10, 10);
 
         // paint input listener
+        g2.translate(0, 0);
         g.setColor(Color.BLUE);
         g.drawRect(getWidth() - 20, 10, 10, 100);
         g.fillRect(getWidth() - 20, 10 + (10 - InputListener.keep) * 10, 10, InputListener.keep * 10);
-
-        // paint all object
-        gameMap.paintComponent(g);
     }
 }

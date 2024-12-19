@@ -23,14 +23,14 @@ public class ClickBlock extends Block{
     public void Update(float delta) {
         if (State == BlockState.ACTIVE) {
             // 點擊成功 -> State.FINISH
-            if (InputListener.IsKeyClick(HitKey) && Tool.IsCollision(Body, GameMap.DetectLine.Body)) {
-                System.out.println(InputListener.ToString() + " -> Hit");
+            if (InputListener.IsKeyClick(HitKey) && GameMap.DetectArea.IsCollision(Body)) {
+                // System.out.println(InputListener.ToString() + " -> Hit");
                 Finish(Judgment.PERFECT);
             }
 
             // 超線未點 -> Miss, State.DEAD
-            if (Tool.IsOver(Body, GameMap.DetectLine.Body)) {
-                System.out.println(InputListener.ToString() + " -> Miss");
+            if (GameMap.DetectArea.IsOver(Body)) {
+                // System.out.println(InputListener.ToString() + " -> Miss");
                 Kill();
                 return;
             }

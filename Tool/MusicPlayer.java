@@ -8,6 +8,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 
 public class MusicPlayer {
 
@@ -27,6 +28,10 @@ public class MusicPlayer {
 
             Audio = (Clip) AudioSystem.getLine(info);
             Audio.open(audioStream);
+
+            FloatControl gainControl = (FloatControl) Audio.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-10.0f);
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -69,7 +74,6 @@ public class MusicPlayer {
         if (Audio == null) {
             return;
         }
-
         Audio.start();
     }
 

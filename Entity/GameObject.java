@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+
 public abstract class GameObject {
     public Rectangle Body;
     public Color BackgroundColor;
