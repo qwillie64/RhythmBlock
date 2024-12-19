@@ -2,15 +2,18 @@ package Game;
 
 import Entity.DetectLine;
 import Score.ScoreManager;
+import State.GameState;
 import State.Judgment;
 import Tool.InputListener;
 import Tool.MusicPlayer;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 
 public class GameRoot extends Game{
     private GameMap gameMap;
+    private GameState gameState;
 
     public GameRoot() {
         super();
@@ -26,6 +29,7 @@ public class GameRoot extends Game{
         gameMap.SetDetectLine(new DetectLine(new Rectangle(0, 300, Windows.getWidth(), 2)));
         gameMap.read("Assests//Daydreams.json");
 
+
         MusicPlayer.LoadSound("Assests//hit.wav", "hit");
         MusicPlayer.LoadSound("Assests//miss.wav", "miss");
         MusicPlayer.LoadMusic("Assests//Daydreams_edit.wav");
@@ -35,11 +39,27 @@ public class GameRoot extends Game{
         ScoreManager.SetUp(Judgment.PERFECT, 100);
         ScoreManager.SetUp(Judgment.GOOD, 50);
         ScoreManager.SetUp(Judgment.MISS, -10);
+
+        gameState = GameState.PLAYING;
     }
     
     @Override
     protected void update(float delta) {
-        gameMap.update(delta);
+
+        if (InputListener.IsKeyClick(KeyEvent.VK_ESCAPE)) {
+            if (gameState == GameState.PAUSE) {
+                MusicPlayer.Play();
+                gameState = gameState.PLAYING;
+            } else {
+                MusicPlayer.pause();
+                gameState = gameState.PAUSE;
+            }
+
+        }
+
+        if (gameState == GameState.PLAYING) {
+            gameMap.update(delta);
+        }
 
         super.update(delta);
     }
@@ -49,7 +69,6 @@ public class GameRoot extends Game{
         super.paintComponent(g);
 
         // paint background
-
 
         // paint score
         char[] data = String.format("Score : %d", ScoreManager.GetCurrentScore()).toCharArray();

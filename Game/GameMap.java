@@ -7,6 +7,7 @@ import Entity.ClickBlock;
 import Entity.DetectLine;
 import Entity.PressBlock;
 import State.BlockState;
+import State.GameState;
 import Tool.MusicPlayer;
 import Tool.Setting;
 import java.awt.Dimension;
@@ -64,13 +65,14 @@ public class GameMap {
                 switch (type) {
                     case 0:
                         StayBlockCollection.add(new ClickBlock(
-                                new Rectangle(channel * 60, -(int)b_height, 50, (int)b_height),
+                                new Rectangle(channel * 60, -(int) b_height, 50, (int) b_height),
                                 Setting.Speed, Setting.KeySet.get(channel), b_start));
                         break;
                     case 1:
                         StayBlockCollection.add(new PressBlock(
-                                new Rectangle(channel * 60, -(int)b_height, 50, (int)b_height),
-                                Setting.Speed, Setting.KeySet.get(channel), b_start, (int)(Setting.Speed * period / 1000000f)));
+                                new Rectangle(channel * 60, -(int) b_height, 50, (int) b_height),
+                                Setting.Speed, Setting.KeySet.get(channel), b_start,
+                                (int) (Setting.Speed * period / 1000000f)));
                         break;
                     default:
                         throw new AssertionError();
@@ -80,7 +82,7 @@ public class GameMap {
             System.out.println(e.toString());
         }
     }
-    
+
     public void update(float delta) {
         for (Block block : ActiveBlockCollection) {
             block.Update(delta);

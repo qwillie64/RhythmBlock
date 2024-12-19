@@ -72,6 +72,14 @@ public class MusicPlayer {
 
         Audio.start();
     }
+
+    public static void pause() {
+        if (Audio == null) {
+            return;
+        }
+
+        Audio.stop();
+    }
     
     public static void Close() {
         FilePath = "";

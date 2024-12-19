@@ -86,10 +86,6 @@ public class Game extends JPanel implements Runnable{
         gameThread = new Thread(this);
         gameThread.start();
     }
-
-    public void Stop() {
-        IsRunning = false;
-    }
     
     protected void initial() {
         System.out.println("Game Init");
