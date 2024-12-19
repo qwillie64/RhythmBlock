@@ -53,9 +53,9 @@ public class GameMap {
             JSONArray blocks = jsonObject.getJSONArray("blocks");
 
             // process block
-            float b_height = (Setting.Speed * 60f / bpm) / 4f;
+            float b_height = 20f;
             DetectArea = new DetectLine(new Rectangle(0, 2 * size.y / 3, 4 * CHANNEL_WIDTH, (int) b_height));
-            time_d = (int) (DetectArea.Body.getCenterY() * 1000000f / Setting.Speed);
+            time_d = (int) ((DetectArea.Body.y + b_height) * 1000000f / Setting.Speed);
             for (int i = 0; i < blocks.length(); i++) {
                 JSONObject block = blocks.getJSONObject(i);
                 int channel = block.getInt("channel");
@@ -96,8 +96,8 @@ public class GameMap {
         
         for (Block block : StayBlockCollection) {
             int off = MusicPlayer.GetCurrentTime() - block.TimeMark + time_d;
-            if (off >= -55000) {
-                block.Body.y -= (int) ((off / 1000000f) * Setting.Speed);
+            if (off >= 0) {
+                block.Body.y += (int) ((off / 1000000f) * Setting.Speed);
                 block.State = BlockState.ACTIVE;
                 ActiveBlockCollection.add(block);
             }
