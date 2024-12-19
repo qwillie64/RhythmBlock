@@ -6,14 +6,19 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Game extends JPanel {
+public class Game extends JPanel implements Runnable{
     public JFrame Windows;
     public boolean IsShowDetail = false;
     public boolean IsRunning = false;
-    private float targetFPS = 60;
+    public final float Target_FPS = 120;
+    public final float Target_UPS = 60;
+    public float Current_FPS;
+    public float Current_UPS;
     private float detailTimer = 0.5f;
-    private float currentFPS = 0;
+    
     private float runningTime = 0;
+
+    private Thread gameThread;
 
 
     public Game() {
@@ -40,7 +45,9 @@ public class Game extends JPanel {
     private void Run() {
         long lastUpdateTime = System.nanoTime();
         float time = 0;
-        final float DELTA = 1f / targetFPS;
+        final float DELTA = 1f / Target_FPS;
+
+        IsRunning = true;
 
         while (IsRunning) {
             long currentTime = System.nanoTime();
@@ -57,7 +64,7 @@ public class Game extends JPanel {
             // 定時更新運行資訊
             time += lastUpdateLength;
             if (time >= detailTimer) {
-                currentFPS = delta * targetFPS;
+                Current_FPS = delta * Target_FPS;
                 runningTime += lastUpdateLength;
                 time = 0;
             }
@@ -74,9 +81,10 @@ public class Game extends JPanel {
     }
 
     public void Start() {
-        IsRunning = true;
         initial();
-        Run();
+
+        gameThread = new Thread(this);
+        gameThread.start();
     }
 
     public void Stop() {
@@ -88,7 +96,7 @@ public class Game extends JPanel {
     }
     
     protected void update(float delta) {
-
+        InputListener.Refresh();
     }
 
     @Override
@@ -96,11 +104,50 @@ public class Game extends JPanel {
         super.paintComponent(g);
     }
 
-    public float getCurrentFPS() {
-        return currentFPS;
-    }
-
     public float getRunningTime() {
         return runningTime;
+    }
+
+    @Override
+    public void run() {
+        double timePerFrame = 1000000000.0 / Target_FPS;
+		double timePerUpdate = 1000000000.0 / Target_UPS;
+
+		long lastFrame = System.nanoTime();
+		long lastUpdate = System.nanoTime();
+		long lastTimeCheck = System.currentTimeMillis();
+
+		int frames = 0;
+        int updates = 0;
+
+        IsRunning = true;
+
+		while (IsRunning) {
+
+			// Render
+            if (System.nanoTime() - lastFrame >= timePerFrame) {
+                repaint();
+				// paintImmediately(0, 0, getWidth(), getHeight());
+				lastFrame = System.nanoTime();
+				frames++;
+			}
+
+			// Update
+            if (System.nanoTime() - lastUpdate >= timePerUpdate) {
+                update((float)(System.nanoTime() - lastUpdate) / 1000000000f);
+                lastUpdate = System.nanoTime();
+                updates++;
+            }
+
+            // Check game state
+            if (System.currentTimeMillis() - lastTimeCheck >= 1000) {
+                Current_FPS = frames;
+                Current_UPS = updates;
+
+				frames = 0;
+				updates = 0;
+				lastTimeCheck = System.currentTimeMillis();
+			}
+		}
     }
 }

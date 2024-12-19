@@ -39,9 +39,9 @@ public class GameRoot extends Game{
     
     @Override
     protected void update(float delta) {
-
         gameMap.update(delta);
-        InputListener.Refresh();
+
+        super.update(delta);
     }
     
     @Override
