@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Setting {
-
-    public static float Speed = 500f;
+    private static final float BASIC_SPEED = 200f;
+    public static float Speed = 1.0f;
     public static int Offset = 0;
     
     public static Map<Integer, Integer> KeySet = new HashMap<Integer, Integer>(){{
@@ -14,5 +14,10 @@ public class Setting {
             put(1, KeyEvent.VK_S);
             put(2, KeyEvent.VK_D);
             put(3, KeyEvent.VK_F);
-    }};
+        }
+    };
+    
+    public static float getSpeed() {
+        return BASIC_SPEED * Speed;
+    }
 }

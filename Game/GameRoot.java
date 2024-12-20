@@ -70,7 +70,7 @@ public class GameRoot extends Game{
         Graphics2D g2 = (Graphics2D) g;
 
         // paint all object
-        g2.translate((Windows.getWidth() - gameMap.getScreenSize().x) / 2, 0);
+        g2.translate((Windows.getWidth() - gameMap.getSize().x) / 2, 0);
         gameMap.paintComponent(g);
 
         // paint score

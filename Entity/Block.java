@@ -5,24 +5,34 @@ import State.BlockState;
 import State.Judgment;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 
 public class Block extends GameObject {
-    public float Speed;
     public int TimeMark;
     public int HitKey;
-    public int Alpha;
     public BlockState State;
 
-    public Block(Rectangle body, float speed, int hitKey, int timeMark) {
+    public Point start;
+    public Point end;
+    public float period;
+    public float current;
+
+    public Block(Rectangle body, int hitKey, int timeMark) {
         this.Body = body;
-        this.Speed = speed;
         this.HitKey = hitKey;
         this.TimeMark = timeMark;
         this.Alpha = 255;
         this.BackgroundColor = Color.BLACK;
         this.State = BlockState.STAY;
+    }
+
+    public void setMovement(Point start, Point end, float period){
+        this.start = start;
+        this.end = end;
+        this.period = period;
+        this.current = 0;
     }
 
     public void Kill() {

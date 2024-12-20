@@ -2,21 +2,15 @@ package Entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 
 public abstract class GameObject {
     public Rectangle Body;
     public Color BackgroundColor;
-
-    public Point GetSize() {
-        return new Point(Body.width, Body.height);
-    }
-
-    public Point GetPosition() {
-        return new Point(Body.x, Body.y);
-    }
+    public int Alpha;
+    public BufferedImage Image;
 
     public abstract void Update(float delta);
     public abstract void paintComponent(Graphics g);
