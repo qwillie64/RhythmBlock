@@ -54,7 +54,6 @@ public class GameRoot extends Game{
                 MusicPlayer.pause();
                 gameState = GameState.PAUSE;
             }
-
         }
 
         if (gameState == GameState.PLAYING) {

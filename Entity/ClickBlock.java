@@ -36,7 +36,6 @@ public class ClickBlock extends Block {
             if (GameMap.DetectArea.IsOver(Body)) {
                 // System.out.println(InputListener.ToString() + " -> Miss");
                 Kill();
-                System.out.println(current);
                 setMovement(Body.getLocation(), new Point(Body.x, Body.y + 100), period);
                 current = 0;
                 return;
