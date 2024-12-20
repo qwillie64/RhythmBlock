@@ -65,10 +65,13 @@ public class GameMap {
 
                 switch (type) {
                     case 0:
-                        StayBlockCollection.add(new ClickBlock(
+                        ClickBlock cb = new ClickBlock(
                                 new Rectangle(channel * CHANNEL_WIDTH + 2, -(int) b_height, CHANNEL_WIDTH - 4,
                                         (int) b_height),
-                                Setting.Speed, Setting.KeySet.get(channel), b_start));
+                                Setting.Speed, Setting.KeySet.get(channel), b_start);
+
+                        cb.period = time_d / 1000000f;
+                        StayBlockCollection.add(cb);
                         break;
                     case 1:
                         StayBlockCollection.add(new PressBlock(
@@ -97,7 +100,11 @@ public class GameMap {
         for (Block block : StayBlockCollection) {
             int off = MusicPlayer.GetCurrentTime() - block.TimeMark + time_d;
             if (off >= 0) {
-                block.Body.y += (int) ((off / 1000000f) * Setting.Speed);
+                // block.Body.y += (int) ((off / 1000000f) * Setting.Speed);
+                if (block.getClass() == ClickBlock.class) {
+                    ClickBlock cb = (ClickBlock) block;
+                    cb.period -= off / 1000000f;
+                }
                 block.State = BlockState.ACTIVE;
                 ActiveBlockCollection.add(block);
             }

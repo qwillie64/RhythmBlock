@@ -27,7 +27,7 @@ public class GameRoot extends Game{
 
         gameMap = new GameMap();
         gameMap.read("Assests//Daydreams.json", new Point(Windows.getBounds().width, Windows.getBounds().height));
-
+        
 
         MusicPlayer.LoadSound("Assests//hit.wav", "hit");
         MusicPlayer.LoadSound("Assests//miss.wav", "miss");
