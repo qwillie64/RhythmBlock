@@ -5,15 +5,23 @@ import State.GameState;
 import State.Judgment;
 import Tool.InputListener;
 import Tool.MusicPlayer;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+
 import java.awt.event.KeyEvent;
+
+
 
 public class GameRoot extends Game{
     private GameMap gameMap;
     private GameState gameState;
+
+    private float roate = 0;
+    private float shear_x = 0;
+    private float shear_y = 0;
 
     public GameRoot() {
         super();
@@ -60,6 +68,25 @@ public class GameRoot extends Game{
             gameMap.update(delta);
         }
 
+        if (InputListener.IsKeyClick(KeyEvent.VK_RIGHT)) {
+            shear_x += 0.1f;
+        }
+        if (InputListener.IsKeyClick(KeyEvent.VK_LEFT)) {
+            shear_x -= 0.1f;
+        }
+        if (InputListener.IsKeyClick(KeyEvent.VK_UP)) {
+            shear_y -= 0.1f;
+        }
+        if (InputListener.IsKeyClick(KeyEvent.VK_DOWN)) {
+            shear_y += 0.1f;
+        }
+        if (InputListener.IsKeyClick(KeyEvent.VK_9)) {
+            roate -= 0.1f;
+        }
+        if (InputListener.IsKeyClick(KeyEvent.VK_0)) {
+            roate += 0.1f;
+        }
+
         super.update(delta);
     }
 
@@ -67,6 +94,8 @@ public class GameRoot extends Game{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        g2.rotate(roate);
+        g2.shear(shear_x, shear_y);
 
         // paint all object
         g2.translate((Windows.getWidth() - gameMap.getSize().x) / 2, 0);

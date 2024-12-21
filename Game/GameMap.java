@@ -11,7 +11,6 @@ import Tool.MusicPlayer;
 import Tool.Setting;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.nio.file.Files;
@@ -103,7 +102,7 @@ public class GameMap {
         for (Block block : StayBlockCollection) {
             int off = MusicPlayer.GetCurrentTime() - block.TimeMark + time_d;
             if (off >= 0) {
-                block.period -= off / 1000000f;
+                block.current += off / 1000000f;
                 block.State = BlockState.ACTIVE;
                 ActiveBlockCollection.add(block);
             }
