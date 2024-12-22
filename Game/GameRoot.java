@@ -5,19 +5,18 @@ import State.GameState;
 import State.Judgment;
 import Tool.InputListener;
 import Tool.MusicPlayer;
-
+import UI.Menu;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-
 import java.awt.event.KeyEvent;
 
 
 
-public class GameRoot extends Game{
+public class GameRoot extends GameScreen{
     private GameMap gameMap;
-    private GameState gameState;
+    private Menu menu;
 
     private float roate = 0;
     private float shear_x = 0;
@@ -48,24 +47,34 @@ public class GameRoot extends Game{
         ScoreManager.SetUp(Judgment.MISS, -10);
 
         IsShowDetail = true;
-        gameState = GameState.PLAYING;
+        GameState.State = GameState.PLAYING;
+
+        menu = new Menu();
     }
     
     @Override
     protected void update(float delta) {
 
-        if (InputListener.IsKeyClick(KeyEvent.VK_ESCAPE)) {
-            if (gameState == GameState.PAUSE) {
-                MusicPlayer.Play();
-                gameState = GameState.PLAYING;
-            } else {
-                MusicPlayer.pause();
-                gameState = GameState.PAUSE;
-            }
+        switch (GameState.State) {
+            case PLAYING:
+                gameMap.update(delta);
+                break;
+            case NONE:
+                // ...
+                break;
+            default:
+                // ...
         }
 
-        if (gameState == GameState.PLAYING) {
-            gameMap.update(delta);
+        
+        if (InputListener.IsKeyClick(KeyEvent.VK_ESCAPE)) {
+            if (GameState.State == GameState.PAUSE) {
+                MusicPlayer.Play();
+                GameState.State = GameState.PLAYING;
+            } else {
+                MusicPlayer.pause();
+                GameState.State = GameState.PAUSE;
+            }
         }
 
         if (InputListener.IsKeyClick(KeyEvent.VK_RIGHT)) {
@@ -97,9 +106,20 @@ public class GameRoot extends Game{
         g2.rotate(roate);
         g2.shear(shear_x, shear_y);
 
-        // paint all object
-        g2.translate((Windows.getWidth() - gameMap.getSize().x) / 2, 0);
-        gameMap.paintComponent(g);
+        switch (GameState.State) {
+            case PLAYING:
+                g2.translate((Windows.getWidth() - gameMap.getSize().x) / 2, 0);
+                gameMap.paintComponent(g);
+                break;
+            case PAUSE:
+                g2.translate((Windows.getWidth() - gameMap.getSize().x) / 2, 0);
+                gameMap.paintComponent(g);
+                menu.draw(g);
+                break;
+            default:
+                // ...
+        }
+
 
         // paint score
         g.setColor(Color.BLACK);

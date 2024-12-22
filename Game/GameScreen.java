@@ -7,7 +7,7 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Game extends JPanel implements Runnable{
+public class GameScreen extends JPanel implements Runnable{
     public JFrame Windows;
     public boolean IsShowDetail = false;
     public boolean IsRunning = false;
@@ -19,11 +19,13 @@ public class Game extends JPanel implements Runnable{
     private Thread gameThread;
 
 
-    public Game() {
+    public GameScreen() {
         setPreferredSize(new Dimension(600, 400));
         setDoubleBuffered(true);
 
-        addKeyListener(new InputListener());
+        InputListener input = new InputListener();
+        addKeyListener(input);
+        addMouseListener(input);
         setFocusable(true);
 
         setUpWindow();
@@ -86,8 +88,8 @@ public class Game extends JPanel implements Runnable{
 
 			// Render
             if (System.nanoTime() - lastFrame >= timePerFrame) {
-                repaint();
-				// paintImmediately(0, 0, getWidth(), getHeight());
+                // repaint();
+				paintImmediately(0, 0, getWidth(), getHeight());
 				lastFrame = System.nanoTime();
 				frames++;
 			}
