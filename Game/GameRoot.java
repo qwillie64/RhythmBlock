@@ -22,7 +22,6 @@ public class GameRoot extends GameScreen{
         Windows.setSize(800, 600);
 
         menuPage = new Menu(this);
-        settlementPage = new Settlement(this);
     }
 
 
@@ -49,7 +48,7 @@ public class GameRoot extends GameScreen{
                 }
 
                 if (gameMap.IsEnd) {
-                    GameState.State = GameState.SETTLEMENT;
+                    goToSettlement();
                 }
                 
                 break;
@@ -105,7 +104,17 @@ public class GameRoot extends GameScreen{
         gameMap = new GameMap();
         gameMap.load("Assests//Daydreams.json", new Point(Windows.getWidth(), Windows.getHeight()));
         gameMap.start();
-        
+
         GameState.State = GameState.PLAYING;
+    }
+
+    public void goToSettlement() {
+        settlementPage = new Settlement(this);
+
+        GameState.State = GameState.SETTLEMENT;
+    }
+    
+    public GameMap getGameMap() {
+        return gameMap;
     }
 }

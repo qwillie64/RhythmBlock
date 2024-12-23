@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class ScoreManager {
 
-    private static Map<Judgment, Integer> ScoreList = new HashMap<>();
+    private static final Map<Judgment, Integer> ScoreList = new HashMap<>();
     private static int Score = 0;
     
     public static void Clear() {

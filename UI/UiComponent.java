@@ -7,6 +7,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public abstract class UiComponent {
@@ -14,7 +16,10 @@ public abstract class UiComponent {
     public Point Size;
     public Color BackGroundColor;
     public BufferedImage Image;
+    public String Text;
     public Font Font;
+
+    private final Map<EventType, Runnable> actions = new HashMap<>();
     
     public UiComponent() {
         this.Position = new Point(0, 0);
@@ -38,6 +43,21 @@ public abstract class UiComponent {
         this.Position.y = y - Size.y / 2;
     }
     
+        public void setEventListener(EventType eventType, Runnable action) {
+        actions.put(eventType, action);
+    }
+
+    public void removeEventListener(EventType eventType, Runnable action) {
+        actions.remove(eventType);
+    }
+
+    protected void triggerEvent(EventType eventType) {
+        Runnable action = actions.get(eventType);
+        if (action != null) {
+            action.run();
+        }
+    }
+
     public abstract void update(float delta);
     public abstract void draw(Graphics g);
     public abstract void show();

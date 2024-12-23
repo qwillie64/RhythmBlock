@@ -1,10 +1,12 @@
 package UI.Page;
 
 import Game.GameRoot;
+import Score.ScoreManager;
 import State.GameState;
 import UI.EventType;
 import UI.UiButton;
 import UI.UiComponent;
+import UI.UiLabel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
@@ -21,8 +23,13 @@ public class Settlement {
         final int WIDTH = root.Windows.getWidth();
         final int HEIGHT = root.Windows.getHeight();
 
-        UiButton confirm_button;
-        confirm_button = new UiButton(0, 0, 100, 50);
+        String score = String.format("Score : %d", ScoreManager.GetCurrentScore());
+        UiLabel score_label = new UiLabel(score, 0, 0, 100, 50);
+        score_label.setCenterPosition(WIDTH / 2, 4 * HEIGHT / 10);
+        score_label.BackGroundColor = Color.BLACK;
+        uiComponents.add(score_label);
+        
+        UiButton confirm_button = new UiButton(0, 0, 100, 50);
         confirm_button.setCenterPosition(WIDTH / 2, 7 * HEIGHT / 10);
         confirm_button.BackGroundColor = Color.GREEN;
         confirm_button.setEventListener(EventType.CLICK, () -> {

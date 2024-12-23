@@ -87,14 +87,13 @@ public class GameScreen extends JPanel implements Runnable{
         super.paintComponent(g);
 
         if (IsShowDetail) {
+            // paint game detail
             g.setColor(Color.BLACK);
-            char[] data = String.format("FPS : %f", Current_FPS).toCharArray();
-            g.drawChars(data, 0, data.length, 10, 10);
-            data = String.format("UPS : %f", Current_UPS).toCharArray();
-            g.drawChars(data, 0, data.length, 10, 25);
+            g.drawString(String.format("FPS : %f", Current_FPS), 10, 10);  
+            g.drawString(String.format("UPS : %f", Current_FPS), 10, 25);
 
             // paint input listener
-            g.setColor(Color.BLUE);
+            g.setColor(Color.GRAY);
             g.drawRect(getWidth() - 20, 10, 10, 100);
             g.fillRect(getWidth() - 20, 10 + (10 - InputListener.keep) * 10, 10, InputListener.keep * 10);
         }

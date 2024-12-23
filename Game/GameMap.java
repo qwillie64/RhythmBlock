@@ -32,7 +32,7 @@ public class GameMap {
 
     private float bpm;
     private int start;
-    private int end = 20099000;
+    private int end = 20000000;
     private String name;
     private int musicId;
     private float volume = 0f;
