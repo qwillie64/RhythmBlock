@@ -11,8 +11,8 @@ public class GameScreen extends JPanel implements Runnable{
     public JFrame Windows;
     public boolean IsShowDetail = false;
     public boolean IsRunning = false;
-    public final float Target_FPS = 120;
-    public final float Target_UPS = 100;
+    public float Target_FPS = 100;
+    public float Target_UPS = 100;
     public float Current_FPS;
     public float Current_UPS;
 
@@ -26,6 +26,7 @@ public class GameScreen extends JPanel implements Runnable{
         InputListener input = new InputListener();
         addKeyListener(input);
         addMouseListener(input);
+        addMouseMotionListener(input);
         setFocusable(true);
 
         setUpWindow();

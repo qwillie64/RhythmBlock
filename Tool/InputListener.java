@@ -1,27 +1,33 @@
 package Tool;
 
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.HashSet;
 import java.util.Set;
 
-public class InputListener implements KeyListener, MouseListener{
-
+public class InputListener implements KeyListener, MouseListener, MouseMotionListener{
+    // Keybord
     private static final Set<Integer> pressedKeys = new HashSet<>();
     private static final Set<Integer> clickedKeys = new HashSet<>();
     private static final int KEEP = 10;
     public static int keep = 0;
 
-    public static boolean IsClicked;
-    public static boolean IsPressed;
+    // Mosue
+    public static Point MousePoint = new Point(0, 0);
+    public static boolean IsMouseClick;
+    public static boolean IsMousePress;
 
     public static void Refresh() {
         clickedKeys.clear();
         if (keep > 0) {
             keep--;
         }
+
+        IsMouseClick = false;
     }
     
     public static Set<Integer> GetPressedKeys() {
@@ -41,7 +47,8 @@ public class InputListener implements KeyListener, MouseListener{
     }
 
     public static String ToString() {
-        return "Click : " + clickedKeys + ", Press : " + pressedKeys;
+        return "Click : " + clickedKeys + ", Press : " + pressedKeys
+         + ", Mouse Click : " + IsMouseClick + ", Mouse Press : " + IsMousePress;
     }
     
     @Override
@@ -65,27 +72,36 @@ public class InputListener implements KeyListener, MouseListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        IsClicked = true;
+        IsMouseClick = true;
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        IsPressed = true;
+        IsMousePress = true;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        IsClicked = false;
-        IsPressed = false;
+        IsMousePress = false;
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-
+        
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        MousePoint = e.getPoint();
     }
 }

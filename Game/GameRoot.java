@@ -18,15 +18,12 @@ public class GameRoot extends GameScreen{
     private GameMap gameMap;
     private Menu menu;
 
-    private float roate = 0;
-    private float shear_x = 0;
-    private float shear_y = 0;
-
     public GameRoot() {
         super();
 
         Windows.setSize(800, 600);
     }
+
 
     @Override
     protected void initial() {
@@ -52,6 +49,7 @@ public class GameRoot extends GameScreen{
         menu = new Menu();
     }
     
+    
     @Override
     protected void update(float delta) {
 
@@ -59,8 +57,8 @@ public class GameRoot extends GameScreen{
             case PLAYING:
                 gameMap.update(delta);
                 break;
-            case NONE:
-                // ...
+            case PAUSE:
+                menu.update(delta);
                 break;
             default:
                 // ...
@@ -77,25 +75,6 @@ public class GameRoot extends GameScreen{
             }
         }
 
-        if (InputListener.IsKeyClick(KeyEvent.VK_RIGHT)) {
-            shear_x += 0.1f;
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_LEFT)) {
-            shear_x -= 0.1f;
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_UP)) {
-            shear_y -= 0.1f;
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_DOWN)) {
-            shear_y += 0.1f;
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_9)) {
-            roate -= 0.1f;
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_0)) {
-            roate += 0.1f;
-        }
-
         super.update(delta);
     }
 
@@ -103,8 +82,6 @@ public class GameRoot extends GameScreen{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.rotate(roate);
-        g2.shear(shear_x, shear_y);
 
         switch (GameState.State) {
             case PLAYING:
@@ -112,14 +89,14 @@ public class GameRoot extends GameScreen{
                 gameMap.paintComponent(g);
                 break;
             case PAUSE:
+                menu.draw(g);
+            
                 g2.translate((Windows.getWidth() - gameMap.getSize().x) / 2, 0);
                 gameMap.paintComponent(g);
-                menu.draw(g);
                 break;
             default:
                 // ...
         }
-
 
         // paint score
         g.setColor(Color.BLACK);
