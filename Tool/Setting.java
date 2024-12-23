@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Setting {
     private static final float BASIC_SPEED = 200f;
-    public static float Speed = 1.0f;
+    public static float Speed = 0.8f;
     public static int Offset = 0;
     
     public static Map<Integer, Integer> KeySet = new HashMap<Integer, Integer>(){{

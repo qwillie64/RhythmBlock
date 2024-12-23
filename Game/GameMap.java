@@ -230,6 +230,9 @@ public class GameMap {
     }
     
     public void paintComponent(Graphics g) {
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, size.x, size.y);
+
         for (Block block : ActiveBlockCollection) {
             block.paintComponent(g);
         }
