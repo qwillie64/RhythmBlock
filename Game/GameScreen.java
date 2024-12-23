@@ -7,23 +7,28 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Game extends JPanel implements Runnable{
+public class GameScreen extends JPanel implements Runnable{
     public JFrame Windows;
     public boolean IsShowDetail = false;
     public boolean IsRunning = false;
-    public final float Target_FPS = 120;
-    public final float Target_UPS = 100;
+    public float Target_FPS = 100;
+    public float Target_UPS = 100;
     public float Current_FPS;
     public float Current_UPS;
 
+    private double timePerFrame = 1000000000.0 / Target_FPS;
+    private double timePerUpdate = 1000000000.0 / Target_UPS;
     private Thread gameThread;
 
 
-    public Game() {
+    public GameScreen() {
         setPreferredSize(new Dimension(600, 400));
         setDoubleBuffered(true);
 
-        addKeyListener(new InputListener());
+        InputListener input = new InputListener();
+        addKeyListener(input);
+        addMouseListener(input);
+        addMouseMotionListener(input);
         setFocusable(true);
 
         setUpWindow();
@@ -40,11 +45,33 @@ public class Game extends JPanel implements Runnable{
         Windows.setVisible(true);
     }
 
+    public void setFPS(float fps) {
+        Target_FPS = fps;
+        timePerFrame = 1000000000.0 / Target_FPS;
+    }
+
+    public void setUPS(float ups) {
+        Target_UPS = ups;
+        timePerUpdate = 1000000000.0 / Target_UPS;
+    }
+    
     public void Start() {
         initial();
 
         gameThread = new Thread(this);
         gameThread.start();
+    }
+
+    public void stop() {
+        IsRunning = false;
+    }
+    
+    public synchronized void quit() {
+        stop();
+        // gameThread.interrupt();
+
+        Windows.setVisible(false);
+        Windows.dispose();
     }
     
     protected void initial() {
@@ -60,19 +87,20 @@ public class Game extends JPanel implements Runnable{
         super.paintComponent(g);
 
         if (IsShowDetail) {
+            // paint game detail
             g.setColor(Color.BLACK);
-            char[] data = String.format("FPS : %f", Current_FPS).toCharArray();
-            g.drawChars(data, 0, data.length, 10, 10);
-            data = String.format("UPS : %f", Current_UPS).toCharArray();
-            g.drawChars(data, 0, data.length, 10, 25);
+            g.drawString(String.format("FPS : %f", Current_FPS), 10, 10);  
+            g.drawString(String.format("UPS : %f", Current_FPS), 10, 25);
+
+            // paint input listener
+            g.setColor(Color.GRAY);
+            g.drawRect(getWidth() - 20, 10, 10, 100);
+            g.fillRect(getWidth() - 20, 10 + (10 - InputListener.keep) * 10, 10, InputListener.keep * 10);
         }
     }
 
     @Override
     public void run() {
-        double timePerFrame = 1000000000.0 / Target_FPS;
-		double timePerUpdate = 1000000000.0 / Target_UPS;
-
 		long lastFrame = System.nanoTime();
 		long lastUpdate = System.nanoTime();
         long lastTimeCheck = System.currentTimeMillis();
@@ -86,8 +114,8 @@ public class Game extends JPanel implements Runnable{
 
 			// Render
             if (System.nanoTime() - lastFrame >= timePerFrame) {
-                repaint();
-				// paintImmediately(0, 0, getWidth(), getHeight());
+                // repaint();
+				paintImmediately(0, 0, getWidth(), getHeight());
 				lastFrame = System.nanoTime();
 				frames++;
 			}

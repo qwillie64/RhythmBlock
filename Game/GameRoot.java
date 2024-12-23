@@ -1,90 +1,75 @@
 package Game;
 
-import Score.ScoreManager;
 import State.GameState;
-import State.Judgment;
 import Tool.InputListener;
-import Tool.MusicPlayer;
-
-import java.awt.Color;
+import UI.Page.Menu;
+import UI.Page.Settlement;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-
 import java.awt.event.KeyEvent;
 
 
 
-public class GameRoot extends Game{
+public class GameRoot extends GameScreen{
     private GameMap gameMap;
-    private GameState gameState;
-
-    private float roate = 0;
-    private float shear_x = 0;
-    private float shear_y = 0;
+    private Menu menuPage;
+    private Settlement settlementPage;
 
     public GameRoot() {
         super();
 
         Windows.setSize(800, 600);
+
+        menuPage = new Menu(this);
     }
+
 
     @Override
     protected void initial() {
         super.initial();
 
-        gameMap = new GameMap();
-        gameMap.read("Assests//Daydreams.json", new Point(Windows.getBounds().width, Windows.getBounds().height));
-        
-
-        MusicPlayer.LoadSound("Assests//hit.wav", "hit");
-        MusicPlayer.LoadSound("Assests//miss.wav", "miss");
-        MusicPlayer.LoadMusic("Assests//Daydreams_edit.wav");
-        MusicPlayer.SetStartPosition(10000);
-        MusicPlayer.Play();
-
-        ScoreManager.SetUp(Judgment.PERFECT, 100);
-        ScoreManager.SetUp(Judgment.GOOD, 50);
-        ScoreManager.SetUp(Judgment.MISS, -10);
-
         IsShowDetail = true;
-        gameState = GameState.PLAYING;
+        GameState.State = GameState.MENU;
     }
+    
     
     @Override
     protected void update(float delta) {
 
-        if (InputListener.IsKeyClick(KeyEvent.VK_ESCAPE)) {
-            if (gameState == GameState.PAUSE) {
-                MusicPlayer.Play();
-                gameState = GameState.PLAYING;
-            } else {
-                MusicPlayer.pause();
-                gameState = GameState.PAUSE;
-            }
-        }
+        switch (GameState.State) {
+            case PLAYING:
+                // 遊玩中
+                gameMap.update(delta);
 
-        if (gameState == GameState.PLAYING) {
-            gameMap.update(delta);
-        }
+                if (InputListener.IsKeyClick(KeyEvent.VK_ESCAPE)) {
+                    gameMap.pause();
+                    GameState.State = GameState.PAUSE;
+                }
 
-        if (InputListener.IsKeyClick(KeyEvent.VK_RIGHT)) {
-            shear_x += 0.1f;
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_LEFT)) {
-            shear_x -= 0.1f;
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_UP)) {
-            shear_y -= 0.1f;
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_DOWN)) {
-            shear_y += 0.1f;
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_9)) {
-            roate -= 0.1f;
-        }
-        if (InputListener.IsKeyClick(KeyEvent.VK_0)) {
-            roate += 0.1f;
+                if (gameMap.IsEnd) {
+                    goToSettlement();
+                }
+                
+                break;
+            case PAUSE:
+                // 觀看中
+                gameMap.viewModeUpdate(delta);
+
+                if (InputListener.IsKeyClick(KeyEvent.VK_ESCAPE)) {
+                    gameMap.restart();
+                    GameState.State = GameState.PLAYING;
+                }
+                
+                break;
+            case MENU:
+                menuPage.update(delta);
+                break;
+            case SETTLEMENT:
+                settlementPage.update(delta);
+                break;
+            default:
+                // ...
         }
 
         super.update(delta);
@@ -94,22 +79,42 @@ public class GameRoot extends Game{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.rotate(roate);
-        g2.shear(shear_x, shear_y);
 
-        // paint all object
-        g2.translate((Windows.getWidth() - gameMap.getSize().x) / 2, 0);
-        gameMap.paintComponent(g);
+        switch (GameState.State) {
+            case PLAYING:
+                g2.translate((Windows.getWidth() - gameMap.getSize().x) / 2, 0);
+                gameMap.paintComponent(g);
+                break;
+            case PAUSE:
+                g2.translate((Windows.getWidth() - gameMap.getSize().x) / 2, 0);
+                gameMap.paintComponent(g);
+                break;
+            case MENU:
+                menuPage.draw(g);
+                break;
+            case SETTLEMENT:
+                settlementPage.draw(g);
+                break;
+            default:
+                // ...
+        }
+    }
 
-        // paint score
-        g.setColor(Color.BLACK);
-        char[] data = String.format("Score : %d", ScoreManager.GetCurrentScore()).toCharArray();
-        g.drawChars(data, 0, data.length, 10, 10);
+    public void startGamePlay() {
+        gameMap = new GameMap();
+        gameMap.load("Assests//Daydreams.json", new Point(Windows.getWidth(), Windows.getHeight()));
+        gameMap.start();
 
-        // paint input listener
-        g2.translate(0, 0);
-        g.setColor(Color.BLUE);
-        g.drawRect(getWidth() - 20, 10, 10, 100);
-        g.fillRect(getWidth() - 20, 10 + (10 - InputListener.keep) * 10, 10, InputListener.keep * 10);
+        GameState.State = GameState.PLAYING;
+    }
+
+    public void goToSettlement() {
+        settlementPage = new Settlement(this);
+
+        GameState.State = GameState.SETTLEMENT;
+    }
+    
+    public GameMap getGameMap() {
+        return gameMap;
     }
 }
