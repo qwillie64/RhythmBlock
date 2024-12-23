@@ -1,0 +1,548 @@
+{
+    "bpm": 150,
+    "name": "Take Me Home",
+    "start": 9500000,
+    "end": 54000000,
+    "blocks": [
+        {
+            "channel": 0,
+            "type": 1,
+            "start": 12800000,
+            "period": 1400000
+        },
+        {
+            "channel": 1,
+            "type": 1,
+            "start": 14400000,
+            "period": 1400000
+        },
+        {
+            "channel": 2,
+            "type": 1,
+            "start": 16000000,
+            "period": 1400000
+        },
+        {
+            "channel": 3,
+            "type": 1,
+            "start": 17600000,
+            "period": 1400000
+        },
+        {
+            "channel": 0,
+            "type": 1,
+            "start": 19200000,
+            "period": 1400000
+        },
+        {
+            "channel": 1,
+            "type": 1,
+            "start": 20800000,
+            "period": 1400000
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 22400000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 22600000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 23200000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 23800000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 24400000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 24800000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 25600000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 25800000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 26000000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 26200000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 26400000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 26600000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 26800000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 27000000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 27200000,
+            "period": 0
+        },
+        {
+            "channel": 2,
+            "type": 0,
+            "start": 27600000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 28200000,
+            "period": 0
+        },
+        {
+            "channel": 2,
+            "type": 0,
+            "start": 28400000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 28800000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 29000000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 29200000,
+            "period": 0
+        },
+        {
+            "channel": 2,
+            "type": 1,
+            "start": 29600000,
+            "period": 200000
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 29800000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 30000000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 30400000,
+            "period": 0
+        },
+        {
+            "channel": 2,
+            "type": 0,
+            "start": 30800000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 31400000,
+            "period": 0
+        },
+        {
+            "channel": 2,
+            "type": 0,
+            "start": 31600000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 32000000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 32400000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 33000000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 33200000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 33600000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 1,
+            "start": 33800000,
+            "period": 400000
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 34600000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 34800000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 35200000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 35600000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 36200000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 36400000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 36800000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 37000000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 37200000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 37800000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 38000000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 38400000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 38600000,
+            "period": 0
+        },
+        {
+            "channel": 2,
+            "type": 0,
+            "start": 38800000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 39200000,
+            "period": 0
+        },
+        {
+            "channel": 2,
+            "type": 0,
+            "start": 39400000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 0,
+            "start": 39600000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 40000000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 40400000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 41000000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 41200000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 41600000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 1,
+            "start": 41600000,
+            "period": 200000
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 42000000,
+            "period": 0
+        },
+        {
+            "channel": 2,
+            "type": 0,
+            "start": 42400000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 42600000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 42800000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 43200000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 1,
+            "start": 43200000,
+            "period": 200000
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 43600000,
+            "period": 0
+        },
+        {
+            "channel": 2,
+            "type": 0,
+            "start": 44000000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 44200000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 44400000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 44800000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 44800000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 45200000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 45800000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 46000000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 46400000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 46800000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 47400000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 47600000,
+            "period": 0
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 48000000,
+            "period": 0
+        },
+        {
+            "channel": 2,
+            "type": 1,
+            "start": 48000000,
+            "period": 600000
+        },
+        {
+            "channel": 0,
+            "type": 1,
+            "start": 48800000,
+            "period": 600000
+        },
+        {
+            "channel": 3,
+            "type": 0,
+            "start": 48800000,
+            "period": 0
+        },
+        {
+            "channel": 1,
+            "type": 1,
+            "start": 49600000,
+            "period": 600000
+        },
+        {
+            "channel": 0,
+            "type": 0,
+            "start": 49600000,
+            "period": 0
+        },
+        {
+            "channel": 3,
+            "type": 1,
+            "start": 50400000,
+            "period": 600000
+        },
+        {
+            "channel": 0,
+            "type": 1,
+            "start": 51200000,
+            "period": 800000
+        }
+    ]
+}

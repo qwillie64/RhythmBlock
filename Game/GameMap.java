@@ -32,7 +32,7 @@ public class GameMap {
 
     private float bpm;
     private int start;
-    private int end = 20000000;
+    private int end;
     private String name;
     private int musicId;
     private float volume = 0f;
@@ -61,12 +61,13 @@ public class GameMap {
     
     public void load(String path, Point screenSize) {
         try {
-            String content = new String(Files.readAllBytes(Paths.get("Assests/Daydreams.json")));
+            String content = new String(Files.readAllBytes(Paths.get(path)));
             JSONObject jsonObject = new JSONObject(content);
 
             // read data
             bpm = jsonObject.getFloat("bpm");
             start = jsonObject.getInt("start");
+            end = jsonObject.getInt("end");
             name = jsonObject.getString("name");
             JSONArray blocks = jsonObject.getJSONArray("blocks");
 
@@ -116,17 +117,17 @@ public class GameMap {
     }
 
     public void loadScore() {
-        ScoreManager.SetUp(Judgment.PERFECT, 100);
-        ScoreManager.SetUp(Judgment.GOOD, 50);
-        ScoreManager.SetUp(Judgment.MISS, -10);
+        ScoreManager.SetUp(Judgment.PERFECT, 50);
+        ScoreManager.SetUp(Judgment.GOOD, 10);
+        ScoreManager.SetUp(Judgment.MISS, -20);
     }
     
     public void loadMusic() {
-        SoundManager.load("Assests//hit.wav", "hit", SoundType.SOUND);
-        SoundManager.load("Assests//miss.wav", "miss", SoundType.SOUND);
+        // SoundManager.load("Assests//hit.wav", "hit", SoundType.SOUND);
+        // SoundManager.load("Assests//miss.wav", "miss", SoundType.SOUND);
 
-        SoundManager.load("Assests//Daydreams_edit.wav", "Daydreams_edit", SoundType.MUSIC);
-        musicId = SoundManager.prepare("Daydreams_edit", start, SoundType.MUSIC);
+        SoundManager.load("Assests//TakeMeHome_edit.wav", "tmh", SoundType.MUSIC);
+        musicId = SoundManager.prepare("tmh", start, SoundType.MUSIC);
 
         opening = new Thread(() -> {
             System.out.println("Game Opening");
@@ -158,11 +159,12 @@ public class GameMap {
             volume = 0f;
             SoundManager.setVolume(musicId, volume);
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             IsEnd = true;
+            SoundManager.remove(musicId);
             System.out.println("Game Finish");
         });
     }
@@ -185,12 +187,27 @@ public class GameMap {
         return size;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void update(float delta) {
+        if (IsEnd) {
+            return;
+        }
+            
+        final int current = SoundManager.getCurrentTime(musicId);
+        if (current >= end) {
+            if (!closing.isAlive()) {
+                closing.start();
+            }
+        }
+        
         for (Block block : ActiveBlockCollection) {
             block.Update(delta);
         }
 
-        final int current = SoundManager.getCurrentTime(musicId);
+        
         for (Block block : StayBlockCollection) {
             int off = current - block.TimeMark + time_d;
             if (off >= 0) {
@@ -202,15 +219,6 @@ public class GameMap {
 
         ActiveBlockCollection.removeIf(obj -> obj.State == BlockState.FINISH);
         StayBlockCollection.removeIf(obj -> obj.State == BlockState.ACTIVE);
-
-        if (current >= end) {
-            if (IsEnd) {
-                return;
-            }
-            if (!closing.isAlive()) {
-                closing.start();
-            }
-        }
     }
     
     public void viewModeUpdate(float delta) {

@@ -27,4 +27,20 @@ public class ResultPack extends DataPack {
 
             return pack;
         }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+    public String getMapName() {
+        return mapName;
+    }
+
+    public int getScore() {
+        return score;
+    }
     }

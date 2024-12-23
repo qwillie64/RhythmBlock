@@ -6,9 +6,11 @@ import java.net.*;
 
 class ClientHandler extends Thread {
     private Socket socket;
+    private ServerWindows container;
 
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket, ServerWindows windows) {
         this.socket = socket;
+        this.container = windows;
     }
 
     @Override
@@ -20,6 +22,7 @@ class ClientHandler extends Thread {
             String message = reader.readLine();
             System.out.println("Received: " + message);
             ResultPack data = ResultPack.toPack(message);
+            container.addResult(data);
             writer.println("ok");
             socket.close();
 

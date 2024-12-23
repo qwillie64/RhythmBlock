@@ -1,5 +1,8 @@
 package Game;
 
+import Client.Client;
+import DataPack.ResultPack;
+import Score.ScoreManager;
 import State.GameState;
 import Tool.InputListener;
 import UI.Page.Menu;
@@ -48,7 +51,9 @@ public class GameRoot extends GameScreen{
                 }
 
                 if (gameMap.IsEnd) {
+                    sendResult();
                     goToSettlement();
+                    resetGame();
                 }
                 
                 break;
@@ -102,7 +107,7 @@ public class GameRoot extends GameScreen{
 
     public void startGamePlay() {
         gameMap = new GameMap();
-        gameMap.load("Assests//Daydreams.json", new Point(Windows.getWidth(), Windows.getHeight()));
+        gameMap.load("Assests//TakeMeHome.json", new Point(Windows.getWidth(), Windows.getHeight()));
         gameMap.start();
 
         GameState.State = GameState.PLAYING;
@@ -113,8 +118,15 @@ public class GameRoot extends GameScreen{
 
         GameState.State = GameState.SETTLEMENT;
     }
-    
-    public GameMap getGameMap() {
-        return gameMap;
+
+    public void sendResult() {
+        ResultPack data = new ResultPack("User 1", 351782693, gameMap.getName(), ScoreManager.GetCurrentScore());
+        boolean isSuccess = Client.sendResult(data);
+        System.out.println("Success : " + isSuccess);
+    }
+
+    public void resetGame() {
+        ScoreManager.Clear();
+        gameMap = null;
     }
 }
