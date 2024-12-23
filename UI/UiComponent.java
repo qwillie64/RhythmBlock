@@ -15,6 +15,7 @@ public abstract class UiComponent {
     public Point Position;
     public Point Size;
     public Color BackGroundColor;
+    public Color FontColor;
     public BufferedImage Image;
     public String Text;
     public Font Font;
@@ -24,8 +25,10 @@ public abstract class UiComponent {
     public UiComponent() {
         this.Position = new Point(0, 0);
         this.Size = new Point(0, 0);
-        this.BackGroundColor = Color.BLACK;
+        this.BackGroundColor = new Color(0, 0, 0, 0);
+        this.FontColor = Color.BLACK;
         this.Image = null;
+        this.Text = "";
         this.Font = null;
     };
 

@@ -1,4 +1,5 @@
-import Game.GameRoot;
+package Game;
+
 
 public class Main {
 

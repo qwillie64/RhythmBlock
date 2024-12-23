@@ -8,6 +8,7 @@ import UI.UiButton;
 import UI.UiComponent;
 import UI.UiLabel;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,10 +24,11 @@ public class Settlement {
         final int WIDTH = root.Windows.getWidth();
         final int HEIGHT = root.Windows.getHeight();
 
-        String score = String.format("Score : %d", ScoreManager.GetCurrentScore());
-        UiLabel score_label = new UiLabel(score, 0, 0, 100, 50);
+        UiLabel score_label = new UiLabel(0,0, 100, 50);
         score_label.setCenterPosition(WIDTH / 2, 4 * HEIGHT / 10);
-        score_label.BackGroundColor = Color.BLACK;
+        score_label.Text = String.format("Score : %d", ScoreManager.GetCurrentScore());
+        score_label.Font = new Font("Serif", Font.BOLD, 24);
+        score_label.BackGroundColor = new Color(50,50,50,0);
         uiComponents.add(score_label);
         
         UiButton confirm_button = new UiButton(0, 0, 100, 50);
