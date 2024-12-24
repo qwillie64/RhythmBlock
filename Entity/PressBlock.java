@@ -15,7 +15,7 @@ public class PressBlock extends Block {
     public Rectangle TailBody;
     private Color BorderColor;
     private float lightingBorder;
-    private float tailP = 0.4f;
+    private float tailP = 0.45f;
 
     public PressBlock(Rectangle body, int hitKey, int timeMark, int tailHeight) {
         super(body, hitKey, timeMark);

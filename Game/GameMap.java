@@ -2,6 +2,7 @@ package Game;
 
 import org.json.*;
 
+import Effect.Effect;
 import Entity.Block;
 import Entity.ClickBlock;
 import Entity.DetectLine;
@@ -17,6 +18,7 @@ import java.awt.Color;
 import javafx.scene.paint.Color;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.nio.file.Files;
@@ -30,12 +32,15 @@ public class GameMap {
         PLAYING, VIEW
     }
 
+    private GameRoot gameRoot;
     private float bpm;
     private int start;
     private int end;
     private String name;
     private int musicId;
     private float volume = 0f;
+    private short[] samples;
+    private Rectangle body;
 
     private int time_d;
     private Point size;
@@ -52,15 +57,59 @@ public class GameMap {
     public static GameMode GameMode;
 
     
-    public GameMap() {
+    public GameMap(GameRoot root) {
+        gameRoot = root;
         size = new Point(0, 0);
         ActiveBlockCollection = new LinkedList<>();
         StayBlockCollection = new LinkedList<>();
         DetectArea = DetectLine.Empty();
+
+        opening = new Thread(() -> {
+            System.out.println("Game Opening");
+            while (volume < 1f) {
+                volume += 0.03f;
+                SoundManager.setVolume(musicId, volume);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            volume = 1f;
+            SoundManager.setVolume(musicId, volume);
+            System.out.println("Game Start");
+        });
+
+        closing = new Thread(() -> {
+            System.out.println("Game Closing");
+            while (volume > 0) {
+                volume -= 0.04f;
+                SoundManager.setVolume(musicId, volume);
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            volume = 0f;
+            SoundManager.setVolume(musicId, volume);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            IsEnd = true;
+            SoundManager.remove(musicId);
+            System.out.println("Game Finish");
+        });
     }
     
-    public void load(String path, Point screenSize) {
+    public void load(String path) {
         try {
+            Point screenSize = new Point(gameRoot.Windows.getWidth(), gameRoot.Windows.getHeight());
+            size = new Point(4 * CHANNEL_WIDTH, screenSize.y);
+            body = new Rectangle((gameRoot.getWidth() - size.x) / 2, 0, size.x, size.y);
+
             String content = new String(Files.readAllBytes(Paths.get(path)));
             JSONObject jsonObject = new JSONObject(content);
 
@@ -109,8 +158,6 @@ public class GameMap {
 
             loadScore();
             loadMusic();
-
-            this.size = new Point(4 * CHANNEL_WIDTH, screenSize.y);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
@@ -127,46 +174,12 @@ public class GameMap {
         // SoundManager.load("Assests//miss.wav", "miss", SoundType.SOUND);
 
         SoundManager.load("Assests//TakeMeHome_edit.wav", "tmh", SoundType.MUSIC);
+        samples = SoundManager.getSample("tmh", SoundType.MUSIC);
+        SoundManager.load("Assests//TakeMeHome_edit.wav", "tmh", SoundType.MUSIC);
         musicId = SoundManager.prepare("tmh", start, SoundType.MUSIC);
 
-        opening = new Thread(() -> {
-            System.out.println("Game Opening");
-            while (volume < 1f) {
-                volume += 0.03f;
-                SoundManager.setVolume(musicId, volume);
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            volume = 1f;
-            SoundManager.setVolume(musicId, volume);
-            System.out.println("Game Start");
-        });
-
-        closing = new Thread(() -> {
-            System.out.println("Game Closing");
-            while (volume > 0) {
-                volume -= 0.04f;
-                SoundManager.setVolume(musicId, volume);
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            volume = 0f;
-            SoundManager.setVolume(musicId, volume);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            IsEnd = true;
-            SoundManager.remove(musicId);
-            System.out.println("Game Finish");
-        });
+        // short[] lowFreqSamples = SoundManager._LowPassFilter(sample, 10);
+        // float lowFrequencyVolume = calculateVolume(lowFreqSamples);
     }
 
     public void start() {
@@ -230,6 +243,11 @@ public class GameMap {
     }
     
     public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D) g;
+        Rectangle b = new Rectangle(0, 0, size.x, size.y);
+        int s = Math.abs(samples[SoundManager.getCurrentTime(musicId) / 1000]) / 200;
+        Effect.lighting(g2, b, 1 + s, Color.GRAY);
+
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, size.x, size.y);
 

@@ -1,7 +1,8 @@
 {
     "bpm": 168,
     "name": "Daydreams",
-    "start": 11400,
+    "start": 11400000,
+    "end" : 66071000,
     "blocks": [
         {
             "channel": 0,

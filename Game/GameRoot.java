@@ -7,22 +7,26 @@ import State.GameState;
 import Tool.InputListener;
 import UI.Page.Menu;
 import UI.Page.Settlement;
+import java.awt.Color;
+import javafx.scene.paint.Color;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 
 
 public class GameRoot extends GameScreen{
     private GameMap gameMap;
+    private Rectangle gameRectangle;
     private Menu menuPage;
     private Settlement settlementPage;
 
     public GameRoot() {
         super();
 
-        Windows.setSize(800, 600);
+        Windows.setSize(800, 800);
 
         menuPage = new Menu(this);
     }
@@ -87,6 +91,9 @@ public class GameRoot extends GameScreen{
 
         switch (GameState.State) {
             case PLAYING:
+                g.setColor(Color.BLACK);
+                g.fillRect(0, 0, getWidth(), getHeight());
+
                 g2.translate((Windows.getWidth() - gameMap.getSize().x) / 2, 0);
                 gameMap.paintComponent(g);
                 break;
@@ -106,10 +113,11 @@ public class GameRoot extends GameScreen{
     }
 
     public void startGamePlay() {
-        gameMap = new GameMap();
-        gameMap.load("Assests//TakeMeHome.json", new Point(Windows.getWidth(), Windows.getHeight()));
+        gameMap = new GameMap(this);
+        gameMap.load("Assests//TakeMeHome.json");
+        // gameMap.load("Assests//Daydreams.json");
         gameMap.start();
-
+        
         GameState.State = GameState.PLAYING;
     }
 
