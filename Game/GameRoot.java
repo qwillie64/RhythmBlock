@@ -2,14 +2,13 @@ package Game;
 
 import Client.Client;
 import DataPack.ResultPack;
+import Effect.ParticularManager;
 import Score.ScoreManager;
 import State.GameState;
 import Tool.InputListener;
 import UI.Page.Menu;
 import UI.Page.Settlement;
 import java.awt.Color;
-import javafx.scene.paint.Color;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -59,7 +58,7 @@ public class GameRoot extends GameScreen{
                     goToSettlement();
                     resetGame();
                 }
-                
+
                 break;
             case PAUSE:
                 // 觀看中
@@ -69,7 +68,7 @@ public class GameRoot extends GameScreen{
                     gameMap.restart();
                     GameState.State = GameState.PLAYING;
                 }
-                
+
                 break;
             case MENU:
                 menuPage.update(delta);
@@ -80,6 +79,8 @@ public class GameRoot extends GameScreen{
             default:
                 // ...
         }
+        
+        ParticularManager.update(delta);
 
         super.update(delta);
     }
@@ -93,7 +94,6 @@ public class GameRoot extends GameScreen{
             case PLAYING:
                 g.setColor(Color.BLACK);
                 g.fillRect(0, 0, getWidth(), getHeight());
-
                 g2.translate((Windows.getWidth() - gameMap.getSize().x) / 2, 0);
                 gameMap.paintComponent(g);
                 break;
@@ -110,6 +110,9 @@ public class GameRoot extends GameScreen{
             default:
                 // ...
         }
+
+        ParticularManager.draw(g2);
+        g2.dispose();
     }
 
     public void startGamePlay() {

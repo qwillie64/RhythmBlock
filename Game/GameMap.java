@@ -235,18 +235,17 @@ public class GameMap {
     }
     
     public void viewModeUpdate(float delta) {
-        for (Block block : ActiveBlockCollection) {
-            if (block.Body.contains(InputListener.MousePoint)) {
-                
-            }
-        }
+    }
+
+    public void addHitEffect() {
+        
     }
     
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        Rectangle b = new Rectangle(0, 0, size.x, size.y);
+        Rectangle b = new Rectangle(-1, 0, size.x, size.y);
         int s = Math.abs(samples[SoundManager.getCurrentTime(musicId) / 1000]) / 200;
-        Effect.lighting(g2, b, 1 + s, Color.GRAY);
+        Effect.lighting(g2, b, 2 + s, Color.GRAY);
 
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, size.x, size.y);
@@ -258,8 +257,8 @@ public class GameMap {
         DetectArea.paintComponent(g);
 
         // paint score
-        g.setColor(Color.BLACK);
-        char[] data = String.format("Score : %d", ScoreManager.GetCurrentScore()).toCharArray();
-        g.drawChars(data, 0, data.length, 10, 10);
+        // g.setColor(Color.BLACK);
+        // char[] data = String.format("Score : %d", ScoreManager.GetCurrentScore()).toCharArray();
+        // g.drawChars(data, 0, data.length, 10, 10);
     }
 }

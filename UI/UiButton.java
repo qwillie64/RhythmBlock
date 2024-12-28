@@ -1,10 +1,12 @@
 package UI;
 
 import Tool.InputListener;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 
 public class UiButton extends UiComponent {
+    private boolean isHover;
 
     public UiButton(int x, int y, int width, int height) {
         this.Position = new Point(x, y);
@@ -23,6 +25,17 @@ public class UiButton extends UiComponent {
         g.setColor(BackGroundColor);
         g.fillRect(Position.x, Position.y, Size.x, Size.y);
         g.drawImage(Image, Position.x, Position.y, null);
+
+        // text
+        g.setColor(FontColor);
+        g.setFont(Font);
+        FontMetrics metrics = g.getFontMetrics();
+        int textWidth = metrics.stringWidth(Text);
+        int textHeight = metrics.getHeight();
+        int textAscent = metrics.getAscent();  
+        int textX = Position.x + (Size.x - textWidth) / 2;
+        int textY = Position.y + (Size.y - textHeight) / 2 + textAscent;
+        g.drawString(Text, textX, textY);
     }
 
     @Override
@@ -30,12 +43,17 @@ public class UiButton extends UiComponent {
         if (getBody().contains(InputListener.MousePoint)) {
             if (InputListener.IsMouseClick) {
                 triggerEvent(EventType.CLICK);
-            }
-            else if (InputListener.IsMousePress) {
+            } else if (InputListener.IsMousePress) {
                 triggerEvent(EventType.PRESS);
-            }
-            else {
+            } else {
                 triggerEvent(EventType.HOVER);
+                isHover = true;
+            }
+        }
+        else {
+            if (isHover) {
+                triggerEvent(EventType.LEAVE);
+                isHover = false;
             }
         }
     }

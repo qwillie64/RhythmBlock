@@ -5,6 +5,7 @@ import UI.EventType;
 import UI.UiButton;
 import UI.UiComponent;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,9 +24,20 @@ public class Menu{
         UiButton single_play_button;
         single_play_button = new UiButton(0, 0, 100, 50);
         single_play_button.setCenterPosition(WIDTH / 2, 3 * HEIGHT / 10);
-        single_play_button.BackGroundColor = Color.GREEN;
+        single_play_button.Text = "Play";
+        single_play_button.Font = new Font("Serif", Font.BOLD, 24);
+        single_play_button.BackGroundColor = Color.GREEN.darker();
         single_play_button.setEventListener(EventType.CLICK, () -> {
             startSinglePlay();
+        });
+        single_play_button.setEventListener(EventType.HOVER, () -> {
+            single_play_button.BackGroundColor = Color.GREEN;
+        });
+        single_play_button.setEventListener(EventType.PRESS, () -> {
+            single_play_button.BackGroundColor = new Color(50, 150, 50);
+        });
+        single_play_button.setEventListener(EventType.LEAVE, () -> {
+            single_play_button.BackGroundColor = Color.GREEN.darker();
         });
         uiComponents.add(single_play_button);
 
@@ -41,6 +53,8 @@ public class Menu{
         UiButton quit_button;
         quit_button = new UiButton(0, 0, 100, 50);
         quit_button.setCenterPosition(WIDTH / 2, 5 * HEIGHT / 10);
+        quit_button.Text = "Exit";
+        quit_button.Font = new Font("Serif", Font.BOLD, 24); 
         quit_button.BackGroundColor = Color.RED;
         quit_button.setEventListener(EventType.CLICK, () -> {
             quit();
